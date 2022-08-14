@@ -5,7 +5,7 @@ const getAllProducts = async () => {
   if (!products) {
     return { error: 'Products not found' };
   }
-  return products;
+  return { data: products };
 };
 
 const getProductById = async (id) => {
@@ -13,7 +13,7 @@ const getProductById = async (id) => {
   if (!product) {
     return { error: 'Product not found' };
   }
-  return product;
+  return { data: product };
 };
 
 module.exports = {

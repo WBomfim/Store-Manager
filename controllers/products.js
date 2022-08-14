@@ -5,7 +5,7 @@ const getAllProducts = async (_req, res) => {
   if (products.error) {
     return res.status(404).json({ message: products.error });
   }
-  return res.status(200).json(products);
+  return res.status(200).json(products.data);
 };
 
 const getProductById = async (req, res) => {
@@ -14,7 +14,7 @@ const getProductById = async (req, res) => {
   if (product.error) {
     return res.status(404).json({ message: product.error });
   }
-  return res.status(200).json(product);
+  return res.status(200).json(product.data);
 };
 
 module.exports = {
