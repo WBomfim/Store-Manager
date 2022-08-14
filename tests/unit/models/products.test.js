@@ -48,3 +48,35 @@ describe('Busca todos os produtos cadastrados no branco de dados', () => {
     });
   });
 });
+
+describe('Busca um produto pelo id', () => {
+  beforeEach(sinon.restore);
+  const TESTE_ID = 1;
+
+  describe('Quando o produto não existir', () => {
+    it('Deve retornar null', async () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+      const result = await productsModel.getProductById(TESTE_ID);
+      expect(result).to.be.null;
+    });
+  });
+
+  describe('Quando o produto existir', () => {
+    const productTest = {
+      "id": 1,
+      "name": "Martelo de Thor",
+    };
+
+    it('Deve retornar um objeto', async () => {
+      sinon.stub(connection, 'execute').resolves([[productTest]]);
+      const result = await productsModel.getProductById(TESTE_ID);
+      expect(result).to.be.an('object');
+    });
+
+    it('O objeto retornado possui as propriedades id e name', async () => {
+      sinon.stub(connection, 'execute').resolves([[productTest]]);
+      const result = await productsModel.getProductById(TESTE_ID);
+      expect(result).to.have.keys('id', 'name');
+    });
+  });
+});
