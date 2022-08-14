@@ -29,7 +29,6 @@ describe('Busca todos os produtos cadastrados no branco de dados', () => {
     it('Deve retornar um array de produtos', async () => {
       sinon.stub(connection, 'execute').resolves([productsTest]);
       const result = await productsModel.getAllProducts();
-      console.log(result);
       expect(result).to.be.an('array');
     });
 
