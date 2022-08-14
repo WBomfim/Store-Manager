@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const productsService = require('../../../services/products');
 const productsController = require('../../../controllers/products');
 
-describe('Quando chamar o controller getAllProducts', () => {
+describe('Controllers - Quando chamar o controller getAllProducts', () => {
   describe('Não havendo produtos cadastrados', () => {
     const req = {};
     const res = {};

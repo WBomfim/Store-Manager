@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const connection = require('../../../models/connection');
 const productsModel = require('../../../models/products');
 
-describe('Busca todos os produtos cadastrados no branco de dados', () => {
+describe('Models - Busca todos os produtos cadastrados no branco de dados', () => {
   beforeEach(sinon.restore);
 
   describe('Quando não houver produtos cadastrados', () => {
@@ -48,7 +48,7 @@ describe('Busca todos os produtos cadastrados no branco de dados', () => {
   });
 });
 
-describe('Busca um produto pelo id', () => {
+describe('Models - Busca um produto pelo id', () => {
   beforeEach(sinon.restore);
   const TESTE_ID = 1;
 
