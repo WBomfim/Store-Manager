@@ -14,7 +14,15 @@ const getProductById = async (id) => {
   return rows;
 };
 
+const addProduct = async (product) => {
+  const query = 'INSERT INTO StoreManager.products (name) VALUES (?);';
+  const [{ insertId }] = await connection.execute(query, [product]);
+  if (!insertId) return null;
+  return insertId;
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
+  addProduct,
 };

@@ -17,7 +17,17 @@ const getProductById = async (req, res) => {
   return res.status(200).json(product.data);
 };
 
+const addProduct = async (req, res) => {
+  const { name } = req.body;
+  const newProduct = await productsService.addProduct(name);
+  if (newProduct.error) {
+    return res.status(404).json({ message: newProduct.error });
+  }
+  return res.status(201).json(newProduct.data);
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
+  addProduct,
 };
