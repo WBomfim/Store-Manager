@@ -4,17 +4,17 @@ const validateProductname = require('../schemas/validateProductname');
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
   if (!products) {
-    return { error: 'Products not found' };
+    return { code: 404, error: 'Products not found' };
   }
-  return { data: products };
+  return { code: 200, data: products };
 };
 
 const getProductById = async (id) => {
   const product = await productsModel.getProductById(id);
   if (!product) {
-    return { error: 'Product not found' };
+    return { code: 404, error: 'Product not found' };
   }
-  return { data: product };
+  return { code: 200, data: product };
 };
 
 const addProduct = async (product) => {
