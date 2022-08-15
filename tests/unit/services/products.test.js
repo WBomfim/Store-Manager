@@ -207,7 +207,7 @@ describe('Services - Criando um novo produto', () => {
       expect(result.code).to.be.equal(501);
     });
 
-    it('A chave error deve conter a mensagem "Product not inserted"', async () => {
+    it('A chave error deve conter a mensagem "Product not added"', async () => {
       const ERROR_MESSAGE = 'Product not added';
       sinon.stub(productsModel, 'addProduct').resolves(null);
       const result = await productsService.addProduct(CORRECT_NAME_TEST);
