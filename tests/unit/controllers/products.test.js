@@ -10,7 +10,7 @@ describe('Controllers - Quando chamar o controller getAllProducts', () => {
     before(() => {
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const objectError = { error: 'Products not found' };
+      const objectError = { code: 404, error: 'Products not found' };
       sinon.stub(productsService, 'getAllProducts').resolves(objectError);
     });
 
@@ -33,6 +33,7 @@ describe('Controllers - Quando chamar o controller getAllProducts', () => {
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
       const objectData = {
+        code: 200,
         data: [
           {
             "id": 1,
@@ -79,7 +80,7 @@ describe('Controllers - Quando chamar o controller getProductById', () => {
       req.params = { id: 1 };
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const objectError = { error: 'Product not found' };
+      const objectError = { code:404, error: 'Product not found' };
       sinon.stub(productsService, 'getProductById').resolves(objectError);
     });
     
@@ -103,6 +104,7 @@ describe('Controllers - Quando chamar o controller getProductById', () => {
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
       const objectData = {
+        code: 200,
         data: {
           "id": 1,
           "name": "Martelo de Thor",

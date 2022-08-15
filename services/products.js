@@ -23,12 +23,8 @@ const addProduct = async (product) => {
 
   const insertId = await productsModel.addProduct(product);
   if (!insertId) return { code: 404, error: 'Product not added' };
-  return {
-    code: 201,
-    data: {
-      id: insertId,
-      name: product,
-  } };
+  return { code: 201, data: { id: insertId, name: product },
+  };
 };
 
 module.exports = {

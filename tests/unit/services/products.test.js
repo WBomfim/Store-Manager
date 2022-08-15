@@ -7,11 +7,17 @@ describe('Services - Busca todos os produtos cadastrados no branco de dados', ()
   beforeEach(sinon.restore);
 
   describe('Quando não houver produtos cadastrados', () => {
-    it('Deve retornar um objeto com a chave error', async () => {
+    it('Deve retornar um objeto com as chaves code e error', async () => {
       sinon.stub(productsModel, 'getAllProducts').resolves(null);
       const result = await productsService.getAllProducts();
       expect(result).to.be.an('object');
-      expect(result).to.have.property('error');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => {
+      sinon.stub(productsModel, 'getAllProducts').resolves(null);
+      const result = await productsService.getAllProducts();
+      expect(result.code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Products not found"', async () => {
@@ -33,11 +39,17 @@ describe('Services - Busca todos os produtos cadastrados no branco de dados', ()
       }
     ];
 
-    it('Deve retornar um objeto com a chave data', async () => {
+    it('Deve retornar um objeto com as chaves code e data', async () => {
       sinon.stub(productsModel, 'getAllProducts').resolves(productsTest);
       const result = await productsService.getAllProducts();
       expect(result).to.be.an('object');
-      expect(result).to.have.property('data');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(productsModel, 'getAllProducts').resolves(productsTest);
+      const result = await productsService.getAllProducts();
+      expect(result.code).to.be.equal(200);
     });
 
     it('A chave data deve conter um array com objetos', async () => {
@@ -62,11 +74,17 @@ describe('Services - Busca um produto pelo id', () => {
   const TESTE_ID = 1;
 
   describe('Quando o produto não existir', () => {
-    it('Deve retornar um objeto com a chave error', async () => {
+    it('Deve retornar um objeto com as chaves code e error', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(null);
       const result = await productsService.getProductById(TESTE_ID);
       expect(result).to.be.an('object');
-      expect(result).to.have.property('error');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => { 
+      sinon.stub(productsModel, 'getProductById').resolves(null);
+      const result = await productsService.getProductById(TESTE_ID);
+      expect(result.code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Product not found"', async () => {
@@ -83,11 +101,17 @@ describe('Services - Busca um produto pelo id', () => {
       "name": "Martelo de Thor",
     };
 
-    it('Deve retornar um objeto com a chave data', async () => {
+    it('Deve retornar um objeto com as chaves code e data', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(productTest);
       const result = await productsService.getProductById(TESTE_ID);
       expect(result).to.be.an('object');
-      expect(result).to.have.property('data');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(productTest);
+      const result = await productsService.getProductById(TESTE_ID);
+      expect(result.code).to.be.equal(200);
     });
 
     it('A chave data deve conter um objeto', async () => {
