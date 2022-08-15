@@ -17,7 +17,7 @@ const addProduct = async (product) => {
   const error = validateProductName(product);
   if (error) return error;
   const insertId = await productsModel.addProduct(product);
-  if (!insertId) return { code: 404, error: 'Product not added' };
+  if (!insertId) return { code: 501, error: 'Product not added' };
   return { code: 201, data: { id: insertId, name: product },
   };
 };
