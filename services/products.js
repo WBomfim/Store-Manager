@@ -1,4 +1,5 @@
 const productsModel = require('../models/products');
+const validateProductname = require('../schemas/validateProductname');
 
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
@@ -17,9 +18,13 @@ const getProductById = async (id) => {
 };
 
 const addProduct = async (product) => {
+  const error = validateProductname(product);
+  if (error) return error;
+
   const insertId = await productsModel.addProduct(product);
-  if (!insertId) return { error: 'Product not added' };
+  if (!insertId) return { code: 404, error: 'Product not added' };
   return {
+    code: 201,
     data: {
       id: insertId,
       name: product,

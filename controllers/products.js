@@ -21,9 +21,9 @@ const addProduct = async (req, res) => {
   const { name } = req.body;
   const newProduct = await productsService.addProduct(name);
   if (newProduct.error) {
-    return res.status(404).json({ message: newProduct.error });
+    return res.status(newProduct.code).json({ message: newProduct.error });
   }
-  return res.status(201).json(newProduct.data);
+  return res.status(newProduct.code).json(newProduct.data);
 };
 
 module.exports = {
