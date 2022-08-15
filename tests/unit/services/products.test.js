@@ -156,7 +156,7 @@ describe('Services - Criando um novo produto', () => {
     const INCORRECT_NAME_TEST = 12345;
 
     it('Deve retornar um objeto com as chaves code e error', async () => {
-      const resul~t = await productsService.addProduct(INCORRECT_NAME_TEST);
+      const result = await productsService.addProduct(INCORRECT_NAME_TEST);
       expect(result).to.be.an('object');
       expect(result).to.have.keys('code', 'error');
     });
@@ -200,7 +200,6 @@ describe('Services - Criando um novo produto', () => {
       expect(result).to.be.an('object');
       expect(result).to.have.keys('code', 'error');
     });
-    ~
 
     it('A chave code deve conter o código 501', async () => {
       sinon.stub(productsModel, 'addProduct').resolves(null);
