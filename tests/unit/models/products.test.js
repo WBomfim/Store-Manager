@@ -79,3 +79,24 @@ describe('Models - Busca um produto pelo id', () => {
     });
   });
 });
+
+describe('Models - Cria um novo produto no banco de dados', () => { 
+  beforeEach(sinon.restore);
+  const newProductTest = 'Martelo de Thor'
+
+  describe('Quando o produto não é criado', () => {
+    it('Deve retornar null', async () => {
+      sinon.stub(connection, 'execute').resolves([{}]);
+      const result = await productsModel.addProduct(newProductTest);
+      expect(result).to.be.null;
+    });
+  });
+
+  describe('Quando o produto for criado com sucesso', () => {
+    it('Deve retornar o id do produto criado', async () => {
+      sinon.stub(connection, 'execute').resolves([{ insertId: 5 }]);
+      const result = await productsModel.addProduct(newProductTest);
+      expect(result).to.be.equal(5);
+    });
+  });
+});
