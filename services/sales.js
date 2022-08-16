@@ -1,6 +1,10 @@
 const salesModel = require('../models/sales');
+const validateSaleInfos = require('../schemas/validateSaleInfos');
 
 const addSale = async (sales) => {
+  const error = await validateSaleInfos(sales);
+  if (error) return error;
+
   const saleId = await salesModel.addSale();
   if (!saleId) return { code: 501, error: 'Sale not added' };
 
