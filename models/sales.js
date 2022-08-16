@@ -6,7 +6,8 @@ const getAllSales = async () => {
     sp.product_id AS productId, sp.quantity
     FROM StoreManager.sales AS sl
     JOIN StoreManager.sales_products AS sp
-    ON sl.id = sp.sale_id;`
+    ON sl.id = sp.sale_id
+    ORDER BY sl.id, sp.product_id;`
   );
   const [sales] = await connection.execute(query);
   if (!sales) return null;
