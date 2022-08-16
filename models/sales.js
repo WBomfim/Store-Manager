@@ -10,8 +10,22 @@ const getAllSales = async () => {
     ORDER BY sl.id, sp.product_id;`
   );
   const [sales] = await connection.execute(query);
-  if (!sales) return null;
+  if (!sales || sales.length === 0) return null;
   return sales;
+};
+
+const getSaleById = async (id) => {
+  const query = (
+    `SELECT sl.date, sp.product_id AS productId, sp.quantity
+    FROM StoreManager.sales AS sl
+    JOIN StoreManager.sales_products AS sp
+    ON sl.id = sp.sale_id
+    WHERE sl.id = ?
+    ORDER BY sp.product_id;`
+  );
+  const [sale] = await connection.execute(query, [id]);
+  if (!sale || sale.length === 0) return null;
+  return sale;
 };
 
 const addSale = async () => {
@@ -30,6 +44,7 @@ const addSaleInfo = async (saleId, productId, quantity) => {
 
 module.exports = {
   getAllSales,
+  getSaleById,
   addSale,
   addSaleInfo,
 };
