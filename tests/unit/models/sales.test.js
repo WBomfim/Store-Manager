@@ -74,3 +74,39 @@ describe('Models - Ao buscar todas as vendas no banco de dados', () => {
       });
   });
 });
+
+describe('Models - Ao buscar uma venda pelo id no banco de dados', () => {
+  beforeEach(sinon.restore);
+  const ID_TEST = 2;
+
+  describe('Quando a venda não existe', () => {
+    it('Deve retornar null', async () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+      const result = await salesModel.getSaleById(ID_TEST);
+      expect(result).to.be.null;
+    });
+  });
+
+  describe('Quando a venda existe', () => {
+    const sale = [
+      { date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 },
+      { date: '2021-09-09T04:24:29.000Z', productId: 2, quantity: 3 },
+    ];
+
+    it('Deve retornar um array com as vendas', async () => {
+        sinon.stub(connection, 'execute').resolves([sale]);
+        const result = await salesModel.getSaleById(ID_TEST);
+        expect(result).to.be.an('array');
+    });
+
+    it('O array deve conter objetos com as propriedades, "date", "productId" e "quantity"',
+      async () => {
+        sinon.stub(connection, 'execute').resolves([sale]);
+        const result = await salesModel.getSaleById(ID_TEST);
+        result.forEach((sale) => {
+          expect(sale).to.be.an('object');
+          expect(sale).to.have.all.keys('date', 'productId', 'quantity');
+        });
+      });
+  });
+});
