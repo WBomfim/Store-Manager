@@ -20,13 +20,13 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 400', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(400)).to.be.equal(true);
+      expect(res.status.calledWith(400)).to.be.true;
     });
 
     it('Deve retornar o objeto com a menssagem de erro "productId" is required', async () => {
       const OBJECT_RES = { message: '"productId" is required' };
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -43,13 +43,13 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 400', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(400)).to.be.equal(true);
+      expect(res.status.calledWith(400)).to.be.true;
     });
 
     it('Deve retornar o objeto com a menssagem de erro "quantity" is required', async () => {
       const OBJECT_RES = { message: '"quantity" is required' };
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -66,13 +66,13 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 400', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(400)).to.be.equal(true);
+      expect(res.status.calledWith(400)).to.be.true;
     });
 
     it('Deve retornar o objeto com a menssagem de erro "productId" must be a number', async () => {
       const OBJECT_RES = { message: '"productId" must be a number' };
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -89,13 +89,13 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 400', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(400)).to.be.equal(true);
+      expect(res.status.calledWith(400)).to.be.true;
     });
 
     it('Deve retornar o objeto com a menssagem de erro "quantity" must be a number', async () => {
       const OBJECT_RES = { message: '"quantity" must be a number' };
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -112,13 +112,13 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 400', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(422)).to.be.equal(true);
+      expect(res.status.calledWith(422)).to.be.true;
     });
 
     it('Deve retornar o objeto com a menssagem de erro "quantity" must be greater than or equal to 1', async () => {
       const OBJECT_RES = { message: '"quantity" must be greater than or equal to 1' };
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -135,13 +135,13 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 404', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(404)).to.be.equal(true);
+      expect(res.status.calledWith(404)).to.be.true;
     });
 
     it('Deve retornar o objeto com a menssagem de erro "Product not found"', async () => {
       const OBJECT_RES = { message: 'Product not found' };
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -184,7 +184,7 @@ describe('Controllers - Quando chamar o controller addSale', () => {
 
     it('Deve retornar o status com o código 200', async () => {
       await salesController.addSale(req, res);
-      expect(res.status.calledWith(200)).to.be.equal(true);
+      expect(res.status.calledWith(200)).to.be.true;
     });
 
     it('Deve retornar o objeto com os dados da venda cadastrada', async () => {
@@ -203,7 +203,67 @@ describe('Controllers - Quando chamar o controller addSale', () => {
       };
       
       await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.equal(true);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+});
+
+describe('Controllers - Quando chamar o controller getSaleById', () => {
+  const req = {};
+  const res = {};
+
+  describe('E não é encontrado a venda com o id enviado na requisição', () => {
+    before(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_ERROR = { code: 404, error: 'Sale not found' };
+      sinon.stub(salesService, 'getSaleById').resolves(OBJECT_ERROR);
+    });
+
+    after(() => salesService.getSaleById.restore());
+
+    it('Deve retornar o status com o código 404', async () => {
+      await salesController.getSaleById(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com a menssagem de erro "Sale not found"', async () => {
+      const OBJECT_RES = { message: 'Sale not found' };
+      await salesController.getSaleById(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+
+  describe('E o id enviado na requisição é encontrado', () => {
+    before(() => {
+      req.params = { id: 2 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_OK = {
+        code: 200,
+        data: [
+          { date: "2021-09-09T04:54:29.000Z", productId: 1, quantity: 2 },
+          { date: "2021-09-09T04:54:54.000Z", productId: 2, quantity: 2 },
+        ]
+      };
+      sinon.stub(salesService, 'getSaleById').resolves(OBJECT_OK);
+    });
+      
+    after(() => salesService.getSaleById.restore());
+
+    it('Deve retornar o status com o código 200', async () => {
+      await salesController.getSaleById(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Deve retornar um array com os dados da venda encontrada', async () => {
+      const OBJECT_RES = [
+        { date: "2021-09-09T04:54:29.000Z", productId: 1, quantity: 2 },
+        { date: "2021-09-09T04:54:54.000Z", productId: 2, quantity: 2 },
+      ];
+      await salesController.getSaleById(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 });
