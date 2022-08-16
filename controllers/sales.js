@@ -1,5 +1,13 @@
 const salesService = require('../services/sales');
 
+const getAllSales = async (_req, res) => {
+  const sales = await salesService.getAllSales();
+  if (sales.error) {
+    return res.status(sales.code).json({ message: sales.error });
+  }
+  return res.status(sales.code).json(sales.data);
+};
+
 const addSale = async (req, res) => {
   const newSale = await salesService.addSale(req.body);
   if (newSale.error) {
@@ -9,5 +17,6 @@ const addSale = async (req, res) => {
 };
 
 module.exports = {
+  getAllSales,
   addSale,
 };
