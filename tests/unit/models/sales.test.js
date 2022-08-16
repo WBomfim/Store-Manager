@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const connection = require('../../../models/connection');
 const salesModel = require('../../../models/sales');
 
-describe('Models - Adiciona uma nova venda no banco de dados', () => {
+describe('Models - Ao adicionar uma nova venda no banco de dados', () => {
   beforeEach(sinon.restore);
 
   describe('Quando a venda não for adicionada', () => {
@@ -24,7 +24,7 @@ describe('Models - Adiciona uma nova venda no banco de dados', () => {
   });
 });
 
-describe('Models - Adiciona as informções de uma venda no banco de dados', () => {
+describe('Models - Ao adicionar as informções de uma venda no banco de dados', () => {
   beforeEach(sinon.restore);
   const ID_TEST = 1;
   const PRODUCT_ID_TEST = 2;

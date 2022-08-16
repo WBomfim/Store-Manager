@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const productsModel = require('../../../models/products');
 const productsService = require('../../../services/products');
 
-describe('Services - Busca todos os produtos cadastrados no branco de dados', () => {
+describe('Services - Ao buscar todos os produtos cadastrados no branco de dados', () => {
   beforeEach(sinon.restore);
 
   describe('Quando não houver produtos cadastrados', () => {
@@ -69,7 +69,7 @@ describe('Services - Busca todos os produtos cadastrados no branco de dados', ()
   });
 });
 
-describe('Services - Busca um produto pelo id', () => {
+describe('Services - Ao buscar um produto pelo id', () => {
   beforeEach(sinon.restore);
   const ID_TEST = 5;
 
@@ -128,7 +128,7 @@ describe('Services - Busca um produto pelo id', () => {
   });
 });
 
-describe('Services - Criando um novo produto', () => {
+describe('Services - Ao criar um novo produto', () => {
   beforeEach(sinon.restore);
   const CORRECT_NAME_TEST = 'Martelo de Thor';
   const INSERT_ID_TEST = 5;
