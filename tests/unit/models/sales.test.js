@@ -51,21 +51,21 @@ describe('Models - Ao buscar todas as vendas no banco de dados', () => {
   });
 
   describe('Quando existem vendas cadastradas', () => {
-    const sales = [
+    const RETURN_SALES = [
       { saleId: 1, date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 },
       { saleId: 1, date: '2021-09-09T04:24:29.000Z', productId: 2, quantity: 3 },
       { saleId: 2, date: '2021-09-09T06:54:29.000Z', productId: 1, quantity: 1 },
       { saleId: 2, date: '2021-09-09T07:44:29.000Z', productId: 3, quantity: 2 },
     ];
     it('Deve retornar um array com as vendas', async () => {
-      sinon.stub(connection, 'execute').resolves([sales]);
+      sinon.stub(connection, 'execute').resolves([RETURN_SALES]);
       const result = await salesModel.getAllSales();
       expect(result).to.be.an('array');
     });
 
     it('O array deve conter objetos com as propriedades "saleId", "date", "productId" e "quantity"',
       async () => {
-        sinon.stub(connection, 'execute').resolves([sales]);
+        sinon.stub(connection, 'execute').resolves([RETURN_SALES]);
         const result = await salesModel.getAllSales();
         result.forEach((sale) => {
           expect(sale).to.be.an('object');
@@ -88,20 +88,20 @@ describe('Models - Ao buscar uma venda pelo id no banco de dados', () => {
   });
 
   describe('Quando a venda existe', () => {
-    const sale = [
+    const RETURN_SALE = [
       { date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 },
       { date: '2021-09-09T04:24:29.000Z', productId: 2, quantity: 3 },
     ];
 
     it('Deve retornar um array com as vendas', async () => {
-        sinon.stub(connection, 'execute').resolves([sale]);
+        sinon.stub(connection, 'execute').resolves([RETURN_SALE]);
         const result = await salesModel.getSaleById(ID_TEST);
         expect(result).to.be.an('array');
     });
 
     it('O array deve conter objetos com as propriedades, "date", "productId" e "quantity"',
       async () => {
-        sinon.stub(connection, 'execute').resolves([sale]);
+        sinon.stub(connection, 'execute').resolves([RETURN_SALE]);
         const result = await salesModel.getSaleById(ID_TEST);
         result.forEach((sale) => {
           expect(sale).to.be.an('object');

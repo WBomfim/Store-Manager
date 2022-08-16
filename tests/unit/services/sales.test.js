@@ -4,7 +4,7 @@ const salesModel = require('../../../models/sales');
 const salesService = require('../../../services/sales');
 const productsModel = require('../../../models/products');
 
-describe('Service - Ao adicionar uma nova venda', () => {
+describe('Services - Ao adicionar uma nova venda', () => {
   beforeEach(sinon.restore);
   
   describe('Quando não é enviado o id do produto no objeto com as infomações', () => {
@@ -234,5 +234,130 @@ describe('Service - Ao adicionar uma nova venda', () => {
         });
       });
     });
+  });
+});
+
+describe('Services - Ao buscar todas as vendas cadastradas no banco de dados', () => {
+  beforeEach(sinon.restore);
+
+  describe('Quando ocorre algum erro na busca das vendas', () => {
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(salesModel, 'getAllSales').resolves(null);
+      const result = await salesService.getAllSales();
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => {
+      sinon.stub(salesModel, 'getAllSales').resolves(null);
+      const result = await salesService.getAllSales();
+      expect(result.code).to.be.equal(404);
+    });
+
+    it('A chave error deve conter a mensagem "Sales not found"', async () => {
+      const ERROR_MESSAGE = 'Sales not found';
+      sinon.stub(salesModel, 'getAllSales').resolves(null);
+      const result = await salesService.getAllSales();
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando a busca das vendas é feita com sucesso', () => {
+    const RETURN_SALES = [
+      { saleId: 1, date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 },
+      { saleId: 1, date: '2021-09-09T04:24:29.000Z', productId: 2, quantity: 3 },
+      { saleId: 2, date: '2021-09-09T06:54:29.000Z', productId: 1, quantity: 1 },
+      { saleId: 2, date: '2021-09-09T07:44:29.000Z', productId: 3, quantity: 2 },
+    ];
+
+    it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(salesModel, 'getAllSales').resolves(RETURN_SALES);
+      const result = await salesService.getAllSales();
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(salesModel, 'getAllSales').resolves(RETURN_SALES);
+      const result = await salesService.getAllSales();
+      expect(result.code).to.be.equal(200);
+    });
+
+    it('A chave data deve conter um array com as vendas cadastradas', async () => {
+      sinon.stub(salesModel, 'getAllSales').resolves(RETURN_SALES);
+      const result = await salesService.getAllSales();
+      expect(result.data).to.be.an('array');
+    });
+
+    it('Cada item do array deve conter as chaves "saleId", "date", "productId" e "quantity"',
+      async () => {
+        sinon.stub(salesModel, 'getAllSales').resolves(RETURN_SALES);
+        const result = await salesService.getAllSales();
+        result.data.forEach((item) => {
+          expect(item).to.have.keys('saleId', 'date', 'productId', 'quantity');
+        });
+    });
+  });
+});
+
+describe('Services - Ao buscar uma venda cadastrada no banco de dados pelo id', () => {
+  beforeEach(sinon.restore);
+  const SALE_ID = 2;
+
+  describe('E a venda pesquisada não existe ou ocorre algum erro na busca', () => {
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.getSaleById(SALE_ID);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.getSaleById(SALE_ID);
+      expect(result.code).to.be.equal(404);
+    });
+
+    it('A chave error deve conter a mensagem "Sale not found"', async () => {
+      const ERROR_MESSAGE = 'Sale not found';
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.getSaleById(SALE_ID);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('E a venda pesquisada existe', () => {
+    const RETURN_SALE = [
+      { date: '2021-09-09T06:54:29.000Z', productId: 1, quantity: 1 },
+      { date: '2021-09-09T07:44:29.000Z', productId: 3, quantity: 2 },
+    ];
+
+    it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      const result = await salesService.getSaleById(SALE_ID);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      const result = await salesService.getSaleById(SALE_ID);
+      expect(result.code).to.be.equal(200);
+    });
+
+    it('A chave data deve conter um array com a venda cadastrada', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      const result = await salesService.getSaleById(SALE_ID);
+      expect(result.data).to.be.an('array');
+    });
+
+    it('Cada item do array deve conter as chaves "date", "productId" e "quantity"',
+      async () => {
+        sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+        const result = await salesService.getSaleById(SALE_ID);
+        result.data.forEach((item) => {
+          expect(item).to.have.keys('date', 'productId', 'quantity');
+        });
+      });
   });
 });
