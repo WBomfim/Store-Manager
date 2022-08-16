@@ -32,9 +32,9 @@ describe('Models - Adiciona as informções de uma venda no banco de dados', () 
 
   describe('Quando as informações a serem salvas são recebidas corretamente', () => {
     it('A função connection.execute deve ser executada', async () => {
-      const spied = sinon.spy(connection, 'execute');
+      const stub = sinon.stub(connection, 'execute').resolves([[]]);
       await salesModel.addSaleInfo(ID_TEST, PRODUCT_ID_TEST, QUANTITY_TEST);
-      expect(spied.called).to.be.true;
+      expect(stub.called).to.be.true;
     });
   });
 });
