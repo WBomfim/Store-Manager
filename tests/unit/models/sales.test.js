@@ -38,3 +38,39 @@ describe('Models - Ao adicionar as informções de uma venda no banco de dados',
     });
   });
 });
+
+describe('Models - Ao buscar todas as vendas no banco de dados', () => {
+  beforeEach(sinon.restore);
+
+  describe('Quando não existem vendas cadastradas', () => {
+    it('Deve retornar null', async () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+      const result = await salesModel.getAllSales();
+      expect(result).to.be.null;
+    });
+  });
+
+  describe('Quando existem vendas cadastradas', () => {
+    const sales = [
+      { saleId: 1, date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 },
+      { saleId: 1, date: '2021-09-09T04:24:29.000Z', productId: 2, quantity: 3 },
+      { saleId: 2, date: '2021-09-09T06:54:29.000Z', productId: 1, quantity: 1 },
+      { saleId: 2, date: '2021-09-09T07:44:29.000Z', productId: 3, quantity: 2 },
+    ];
+    it('Deve retornar um array com as vendas', async () => {
+      sinon.stub(connection, 'execute').resolves([sales]);
+      const result = await salesModel.getAllSales();
+      expect(result).to.be.an('array');
+    });
+
+    it('O array deve conter objetos com as propriedades "saleId", "date", "productId" e "quantity"',
+      async () => {
+        sinon.stub(connection, 'execute').resolves([sales]);
+        const result = await salesModel.getAllSales();
+        result.forEach((sale) => {
+          expect(sale).to.be.an('object');
+          expect(sale).to.have.all.keys('saleId', 'date', 'productId', 'quantity');
+        });
+      });
+  });
+});
