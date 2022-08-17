@@ -22,8 +22,19 @@ const addProduct = async (product) => {
   };
 };
 
+const updateProduct = async (id, name) => {
+  const error = validateProductName(name);
+  if (error) return error;
+  const existsProduct = await productsModel.getProductById(id);
+  if (!existsProduct) return { code: 404, error: 'Product not found' };
+  const updated = await productsModel.updateProduct(id, name);
+  if (!updated) return { code: 501, error: 'Product not updated' };
+  return { code: 200, data: { id, name } };
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   addProduct,
+  updateProduct,
 };
