@@ -208,6 +208,85 @@ describe('Controllers - Quando chamar o controller addSale', () => {
   });
 });
 
+describe('Controllers - Quando chamar o controller getAllSeles', () => {
+  const req = {};
+  const res = {};
+
+  describe('E não houver vendas cadastradas ou ocorrer algum erro no banco de dados', () => {
+    before(() => {
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_ERROR = { code: 404, error: 'Sales not found' };
+      sinon.stub(salesService, 'getAllSales').resolves(OBJECT_ERROR);
+    });
+
+    after(() => salesService.getAllSales.restore());
+
+    it('Deve retornar o status com o código 404', async () => {
+      await salesController.getAllSales(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com a menssagem de erro "Sales not found"', async () => {
+      const OBJECT_RES = { message: 'Sales not found' };
+      await salesController.getAllSales(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+
+  describe('E houver vendas cadastradas', () => {
+    before(() => {
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_OK = {
+        code: 200,
+        data: [
+          {
+            "saleId": 1,
+            "date": "2021-09-09T04:54:29.000Z",
+            "productId": 1,
+            "quantity": 2
+          },
+          {
+            "saleId": 1,
+            "date": "2021-09-09T04:54:54.000Z",
+            "productId": 2,
+            "quantity": 2
+          }
+        ]
+      };
+      sinon.stub(salesService, 'getAllSales').resolves(OBJECT_OK);
+    });
+
+    after(() => salesService.getAllSales.restore());
+
+    it('Deve retornar o status com o código 200', async () => {
+      await salesController.getAllSales(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com os dados das vendas cadastradas', async () => {
+      const OBJECT_RES = [
+        {
+          "saleId": 1,
+          "date": "2021-09-09T04:54:29.000Z",
+          "productId": 1,
+          "quantity": 2
+        },
+        {
+          "saleId": 1,
+          "date": "2021-09-09T04:54:54.000Z",
+          "productId": 2,
+          "quantity": 2
+        }
+      ];
+      
+      await salesController.getAllSales(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+});
+
 describe('Controllers - Quando chamar o controller getSaleById', () => {
   const req = {};
   const res = {};
