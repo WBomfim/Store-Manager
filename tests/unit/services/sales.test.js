@@ -361,3 +361,84 @@ describe('Services - Ao buscar uma venda cadastrada no banco de dados pelo id', 
       });
   });
 });
+
+describe('Services - Ao excluir uma venda do banco de dados', () => {
+  beforeEach(sinon.restore);
+  const SALE_ID = 2;
+  const RETURN_SALE = [
+    { date: '2021-09-09T06:54:29.000Z', productId: 1, quantity: 1 },
+    { date: '2021-09-09T07:44:29.000Z', productId: 3, quantity: 2 },
+  ];
+
+  describe('E a venda pesquisada não existe no banco de dados', () => {
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result.code).to.be.equal(404);
+    });
+
+    it('A chave error deve conter a mensagem "Sale not found"', async () => {
+      const ERROR_MESSAGE = 'Sale not found';
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('E a venda não é excluída por algum erro no banco de dados', () => {
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      sinon.stub(salesModel, 'deleteSale').resolves(null);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 501', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      sinon.stub(salesModel, 'deleteSale').resolves(null);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result.code).to.be.equal(501);
+    });
+
+    it('A chave error deve conter a mensagem "Sale not deleted"', async () => {
+      const ERROR_MESSAGE = 'Sale not deleted';
+      sinon.stub(salesModel, 'getSaleById').resolves([{}]);
+      sinon.stub(salesModel, 'deleteSale').resolves(null);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('E a venda pesquisada existe', () => {
+    it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      sinon.stub(salesModel, 'deleteSale').resolves(true);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 204', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      sinon.stub(salesModel, 'deleteSale').resolves(true);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result.code).to.be.equal(204);
+    });
+
+    it('A chave data deve conter um objeto vazio', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
+      sinon.stub(salesModel, 'deleteSale').resolves(true);
+      const result = await salesService.deleteSale(SALE_ID);
+      expect(result.data).to.be.an('object');
+      expect(result.data).to.be.empty;
+    });
+  });
+});
