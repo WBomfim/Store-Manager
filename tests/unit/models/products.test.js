@@ -114,3 +114,16 @@ describe('Models - Ao atualizar um produto no banco de dados', () => {
     });
   });
 });
+
+describe('Models - Ao deletar um produto no banco de dados', () => {
+  beforeEach(sinon.restore);
+  const ID_TEST = 1;
+
+  describe('Quando o produto for deletado com sucesso', () => {
+    it('Deve retornar true', async () => {
+      sinon.stub(connection, 'execute').resolves([{}]);
+      const result = await productsModel.deleteProduct(ID_TEST);
+      expect(result).to.be.true;
+    });
+  });
+});
