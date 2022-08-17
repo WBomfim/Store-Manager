@@ -34,25 +34,25 @@ const addSale = async (sales) => {
   };
 };
 
-const updateSale = async (id, sales) => {
+const updateSale = async (saleId, sales) => {
   const error = await validateSaleInfos(sales);
   if (error) return error;
 
-  const sale = await salesModel.getSaleById(id);
+  const sale = await salesModel.getSaleById(saleId);
   if (!sale) return { code: 404, error: 'Sale not found' };
 
-  const deleteSaleInfo = await salesModel.deleteSaleInfo(id);
+  const deleteSaleInfo = await salesModel.deleteSaleInfo(saleId);
   if (!deleteSaleInfo) return { code: 501, error: 'Sale not updated' };
 
   const insertSaleInfo = sales.map(({ productId, quantity }) => (
-    salesModel.addSaleInfo(id, productId, quantity)
+    salesModel.addSaleInfo(saleId, productId, quantity)
   ));
   await Promise.all(insertSaleInfo);
 
   return {
     code: 200,
     data: {
-      id,
+      saleId,
       itemsUpdated: sales,
     },
   };
