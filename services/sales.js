@@ -34,6 +34,30 @@ const addSale = async (sales) => {
   };
 };
 
+const updateSale = async (id, sales) => {
+  const error = await validateSaleInfos(sales);
+  if (error) return error;
+
+  const sale = await salesModel.getSaleById(id);
+  if (!sale) return { code: 404, error: 'Sale not found' };
+
+  const deleteSaleInfo = await salesModel.deleteSaleInfo(id);
+  if (!deleteSaleInfo) return { code: 501, error: 'Sale not updated' };
+
+  const insertSaleInfo = sales.map(({ productId, quantity }) => (
+    salesModel.addSaleInfo(id, productId, quantity)
+  ));
+  await Promise.all(insertSaleInfo);
+
+  return {
+    code: 200,
+    data: {
+      id,
+      itemsUpdated: sales,
+    },
+  };
+};
+
 const deleteSale = async (id) => {
   const sale = await salesModel.getSaleById(id);
   if (!sale) return { code: 404, error: 'Sale not found' };
@@ -48,5 +72,6 @@ module.exports = {
   getAllSales,
   getSaleById,
   addSale,
+  updateSale,
   deleteSale,
 };
