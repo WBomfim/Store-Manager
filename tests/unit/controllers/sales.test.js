@@ -346,3 +346,54 @@ describe('Controllers - Quando chamar o controller getSaleById', () => {
     });
   });
 });
+
+describe('Controller - Quando chamar o controller deleteSale', () => {
+  const req = {};
+  const res = {};
+
+  describe('E não é encontrado a venda com o id enviado na requisição', () => {
+    before(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_ERROR = { code: 404, error: 'Sale not found' };
+      sinon.stub(salesService, 'deleteSale').resolves(OBJECT_ERROR);
+    });
+
+    after(() => salesService.deleteSale.restore());
+
+    it('Deve retornar o status com o código 404', async () => {
+      await salesController.deleteSale(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com a menssagem de erro "Sale not found"', async () => {
+      const OBJECT_RES = { message: 'Sale not found' };
+      await salesController.deleteSale(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+
+  describe('E o id enviado na requisição é encontrado e a venda é excluída com sucesso', () => {
+    before(() => {
+      req.params = { id: 2 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_OK = { code: 204, data: {} };
+      sinon.stub(salesService, 'deleteSale').resolves(OBJECT_OK);
+    });
+
+    after(() => salesService.deleteSale.restore());
+
+    it('Deve retornar o status com o código 204', async () => {
+      await salesController.deleteSale(req, res);
+      expect(res.status.calledWith(204)).to.be.true;
+    });
+
+    it('Deve retornar o objeto vazio', async () => {
+      const OBJECT_RES = {};
+      await salesController.deleteSale(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+});

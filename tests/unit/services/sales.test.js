@@ -417,7 +417,7 @@ describe('Services - Ao excluir uma venda do banco de dados', () => {
     });
   });
 
-  describe('E a venda pesquisada existe', () => {
+  describe('E a venda pesquisada existe e é excluida com sucesso', () => {
     it('Deve retornar um objeto com as chaves code e data', async () => {
       sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
       sinon.stub(salesModel, 'deleteSale').resolves(true);
