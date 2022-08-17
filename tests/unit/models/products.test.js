@@ -100,3 +100,17 @@ describe('Models - Ao criar um novo produto no banco de dados', () => {
     });
   });
 });
+
+describe('Models - Ao atualizar um produto no banco de dados', () => {
+  beforeEach(sinon.restore);
+  const ID_TEST = 1;
+  const NEW_NAME_TEST = 'Martelo de Thor';
+
+  describe('Quando o produto for atualizado com sucesso', () => {
+    it('Deve retornar true', async () => {
+      sinon.stub(connection, 'execute').resolves([{}]);
+      const result = await productsModel.updateProduct(ID_TEST, NEW_NAME_TEST);
+      expect(result).to.be.true;
+    });
+  });
+});
