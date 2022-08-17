@@ -442,3 +442,88 @@ describe('Controllers - Quando chamar o controller updateProduct', () => {
     });
   });
 });
+
+describe('Controllers - Quando chamar o controller "deleteProduct"', () => {
+  const req = {};
+  const res = {};
+
+  describe('E o produto não é encontrado no banco de dados', () => {
+    before(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_ERROR = {
+        code: 404,
+        error: 'Product not found'
+      };
+      sinon.stub(productsService, 'deleteProduct').resolves(OBJECT_ERROR);
+    });
+
+    after(() => productsService.deleteProduct.restore());
+
+    it('Deve retornar o status com o código 404', async () => {
+      await productsController.deleteProduct(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com a menssagem de erro "Product not found"', async () => {
+      const OBJECT_RES = {
+        message: 'Product not found'
+      };
+      await productsController.deleteProduct(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+
+  describe('E o produto não é deletado no banco de dados', () => {
+    before(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_ERROR = {
+        code: 501,
+        error: 'Product not deleted'
+      };
+      sinon.stub(productsService, 'deleteProduct').resolves(OBJECT_ERROR);
+    });
+
+    after(() => productsService.deleteProduct.restore());
+
+    it('Deve retornar o status com o código 501', async () => {
+      await productsController.deleteProduct(req, res);
+      expect(res.status.calledWith(501)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com a menssagem de erro "Product not deleted"', async () => {
+      const OBJECT_RES = { message: 'Product not deleted' };
+      await productsController.deleteProduct(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+
+  describe('E o produto é deletado no banco de dados com sucesso', () => {
+    before(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_SUCCESS = {
+        code: 204,
+        data: {}
+      };
+      sinon.stub(productsService, 'deleteProduct').resolves(OBJECT_SUCCESS);
+    });
+
+    after(() => productsService.deleteProduct.restore());
+
+    it('Deve retornar o status com o código 204', async () => {
+      await productsController.deleteProduct(req, res);
+      expect(res.status.calledWith(204)).to.be.true;
+    });
+
+    it('Deve retornar o objeto com o produto deletado', async () => {
+      const OBJECT_RES = {};
+      await productsController.deleteProduct(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    });
+  });
+});
