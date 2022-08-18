@@ -538,33 +538,6 @@ describe('Services - Ao atualizar uma venda', () => {
     });
   });
 
-  describe('Quando não ocorre a exclusão das informações da venda', () => {
-    const SALE_CORRECT_TEST = [{
-      "productId": 1,
-      "quantity": 1
-    }];
-
-    it('Deve retornar um objeto com as chaves code e error', async () => {
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
-      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
-      expect(result).to.be.an('object');
-      expect(result).to.have.keys('code', 'error');
-    });
-
-    it('A chave code deve conter o código 501', async () => {
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
-      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
-      expect(result.code).to.be.equal(501);
-    });
-
-    it('A chave error deve conter a mensagem "Sale not updated"', async () => {
-      const ERROR_MESSAGE = 'Sale not updated';
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
-      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
-    });
-  });
-
   describe('Quando a venda é atualizada com sucesso', () => {
     const SALE_CORRECT_TEST = [{
       "productId": 1,
@@ -644,31 +617,6 @@ describe('Services - Ao excluir uma venda do banco de dados', () => {
     it('A chave error deve conter a mensagem "Sale not found"', async () => {
       const ERROR_MESSAGE = 'Sale not found';
       sinon.stub(salesModel, 'getSaleById').resolves(null);
-      const result = await salesService.deleteSale(SALE_ID);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
-    });
-  });
-
-  describe('E a venda não é excluída por algum erro no banco de dados', () => {
-    it('Deve retornar um objeto com as chaves code e error', async () => {
-      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
-      sinon.stub(salesModel, 'deleteSale').resolves(null);
-      const result = await salesService.deleteSale(SALE_ID);
-      expect(result).to.be.an('object');
-      expect(result).to.have.keys('code', 'error');
-    });
-
-    it('A chave code deve conter o código 501', async () => {
-      sinon.stub(salesModel, 'getSaleById').resolves(RETURN_SALE);
-      sinon.stub(salesModel, 'deleteSale').resolves(null);
-      const result = await salesService.deleteSale(SALE_ID);
-      expect(result.code).to.be.equal(501);
-    });
-
-    it('A chave error deve conter a mensagem "Sale not deleted"', async () => {
-      const ERROR_MESSAGE = 'Sale not deleted';
-      sinon.stub(salesModel, 'getSaleById').resolves([{}]);
-      sinon.stub(salesModel, 'deleteSale').resolves(null);
       const result = await salesService.deleteSale(SALE_ID);
       expect(result.error).to.be.equal(ERROR_MESSAGE);
     });

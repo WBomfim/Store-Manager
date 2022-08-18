@@ -37,12 +37,9 @@ const addSale = async (sales) => {
 const updateSale = async (saleId, sales) => {
   const error = await validateSaleInfos(sales);
   if (error) return error;
-
   const sale = await salesModel.getSaleById(saleId);
   if (!sale) return { code: 404, error: 'Sale not found' };
-
-  const deleteSaleInfo = await salesModel.deleteSaleInfo(saleId);
-  if (!deleteSaleInfo) return { code: 501, error: 'Sale not updated' };
+  await salesModel.deleteSaleInfo(saleId);
 
   const insertSaleInfo = sales.map(({ productId, quantity }) => (
     salesModel.addSaleInfo(saleId, productId, quantity)
@@ -61,10 +58,7 @@ const updateSale = async (saleId, sales) => {
 const deleteSale = async (id) => {
   const sale = await salesModel.getSaleById(id);
   if (!sale) return { code: 404, error: 'Sale not found' };
-
-  const deletedSale = await salesModel.deleteSale(id);
-  if (!deletedSale) return { code: 501, error: 'Sale not deleted' };
-
+  await salesModel.deleteSale(id);
   return { code: 204, data: {} };
 };
 
