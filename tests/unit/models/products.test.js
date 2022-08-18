@@ -80,6 +80,54 @@ describe('Models - Ao buscar um produto pelo id', () => {
   });
 });
 
+describe('Models - Ao buscar um produto pelo nome', () => {
+  beforeEach(sinon.restore);
+  const NAME_TEST = 'Martelo';
+
+  describe('Quando o produto não existir', () => {
+    it('Deve retornar null', async () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+      const result = await productsModel.searchProduct(NAME_TEST);
+      expect(result).to.be.null;
+    });
+  });
+
+  describe('Quando o produto existir', () => {
+    const PRODUCT_TESTE = [
+      {
+        "id": 1,
+        "name": "Martelo de Thor",
+      },
+      {
+        "id": 2,
+        "name": "Martelo do Batman",
+      }
+    ];
+
+    it('Deve retornar um array de produtos', async () => {
+      sinon.stub(connection, 'execute').resolves([PRODUCT_TESTE]);
+      const result = await productsModel.searchProduct(NAME_TEST);
+      expect(result).to.be.an('array');
+    });
+
+    it('Os elementos desse array são objetos', async () => {
+      sinon.stub(connection, 'execute').resolves([PRODUCT_TESTE]);
+      const result = await productsModel.searchProduct(NAME_TEST);
+      result.forEach((product) => {
+        expect(product).to.be.an('object');
+      });
+    });
+
+    it('Os elementos desse array possuem as propriedades id e name', async () => {
+      sinon.stub(connection, 'execute').resolves([PRODUCT_TESTE]);
+      const result = await productsModel.searchProduct(NAME_TEST);
+      result.forEach((product) => {
+        expect(product).to.have.keys('id', 'name');
+      });
+    });
+  });
+});
+
 describe('Models - Ao criar um novo produto no banco de dados', () => { 
   beforeEach(sinon.restore);
   const NEW_PRODUCT_TEST = 'Martelo de Thor'
