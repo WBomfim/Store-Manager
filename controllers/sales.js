@@ -1,46 +1,46 @@
 const salesService = require('../services/sales');
 
 const getAllSales = async (_req, res) => {
-  const sales = await salesService.getAllSales();
-  if (sales.error) {
-    return res.status(sales.code).json({ message: sales.error });
+  const { code, data, error } = await salesService.getAllSales();
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(sales.code).json(sales.data);
+  return res.status(code).json(data);
 };
 
 const getSaleById = async (req, res) => {
   const { id } = req.params;
-  const sale = await salesService.getSaleById(id);
-  if (sale.error) {
-    return res.status(sale.code).json({ message: sale.error });
+  const { code, data, error } = await salesService.getSaleById(id);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(sale.code).json(sale.data);
+  return res.status(code).json(data);
 };
 
 const addSale = async (req, res) => {
-  const newSale = await salesService.addSale(req.body);
-  if (newSale.error) {
-    return res.status(newSale.code).json({ message: newSale.error });
+  const { code, data, error } = await salesService.addSale(req.body);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(newSale.code).json(newSale.data);
+  return res.status(code).json(data);
 };
 
 const updateSale = async (req, res) => {
   const { id } = req.params;
-  const updatedSale = await salesService.updateSale(id, req.body);
-  if (updatedSale.error) {
-    return res.status(updatedSale.code).json({ message: updatedSale.error });
+  const { code, data, error } = await salesService.updateSale(id, req.body);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(updatedSale.code).json(updatedSale.data);
+  return res.status(code).json(data);
 };
 
 const deleteSale = async (req, res) => {
   const { id } = req.params;
-  const deletedSale = await salesService.deleteSale(id);
-  if (deletedSale.error) {
-    return res.status(deletedSale.code).json({ message: deletedSale.error });
+  const { code, data, error } = await salesService.deleteSale(id);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(deletedSale.code).json(deletedSale.data);
+  return res.status(code).json(data);
 };
 
 module.exports = {
