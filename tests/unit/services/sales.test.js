@@ -362,6 +362,263 @@ describe('Services - Ao buscar uma venda cadastrada no banco de dados pelo id', 
   });
 });
 
+describe('Services - Ao atualizar uma venda', () => {
+  beforeEach(sinon.restore);
+  const SALE_ID = 2;
+
+  describe('Quando não é enviado o id do produto no objeto com as infomações', () => {
+    const SALE_INCORRECT_TEST = [{
+      "quantity": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 400', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.code).to.be.equal(400);
+    });
+
+    it('A chave error deve conter a mensagem "productId" is required', async () => {
+      const ERROR_MESSAGE = '"productId" is required';
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando não é enviado a quantidade do produto no objeto com as infomações', () => {
+    const SALE_INCORRECT_TEST = [{
+      "productId": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 400', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.code).to.be.equal(400);
+    });
+
+    it('A chave error deve conter a mensagem "quantity" is required', async () => {
+      const ERROR_MESSAGE = '"quantity" is required';
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando o id do produto não é um número', () => {
+    const SALE_INCORRECT_TEST = [{
+      "productId": "A",
+      "quantity": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 400', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.code).to.be.equal(400);
+    });
+
+    it('A chave error deve conter a mensagem "productId" must be a number', async () => {
+      const ERROR_MESSAGE = '"productId" must be a number';
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando a quantidade do produto não é um número', () => {
+    const SALE_INCORRECT_TEST = [{
+      "productId": 1,
+      "quantity": "A"
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 400', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.code).to.be.equal(400);
+    });
+
+    it('A chave error deve conter a mensagem "quantity" must be a number', async () => {
+      const ERROR_MESSAGE = '"quantity" must be a number';
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando a quantidade do produto é menor ou igual a 0', () => {
+    const SALE_INCORRECT_TEST = [{
+      "productId": 1,
+      "quantity": 0
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 422', async () => {
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.code).to.be.equal(422);
+    });
+
+    it('A chave error deve conter a mensagem "quantity" must be greater than or equal to 1', async () => {
+      const ERROR_MESSAGE = '"quantity" must be greater than or equal to 1';
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando o produto não está cadastrado no banco de dados', () => {
+    const SALE_INCORRECT_TEST = [{
+      "productId": 100,
+      "quantity": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(null);
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(null);
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.code).to.be.equal(404);
+    });
+
+    it('A chave error deve conter a mensagem "Product not found"', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(null);
+      const ERROR_MESSAGE = 'Product not found';
+      const result = await salesService.updateSale(SALE_ID, SALE_INCORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando a venda a ser atualizada não existe', () => {
+    const SALE_CORRECT_TEST = [{
+      "productId": 1,
+      "quantity": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 404', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.code).to.be.equal(404);
+    });
+
+    it('A chave error deve conter a mensagem "Sale not found"', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(null);
+      const ERROR_MESSAGE = 'Sale not found';
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando não ocorre a exclusão das informações da venda', () => {
+    const SALE_CORRECT_TEST = [{
+      "productId": 1,
+      "quantity": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'error');
+    });
+
+    it('A chave code deve conter o código 501', async () => {
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.code).to.be.equal(501);
+    });
+
+    it('A chave error deve conter a mensagem "Sale not updated"', async () => {
+      const ERROR_MESSAGE = 'Sale not updated';
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.error).to.be.equal(ERROR_MESSAGE);
+    });
+  });
+
+  describe('Quando a venda é atualizada com sucesso', () => {
+    const SALE_CORRECT_TEST = [{
+      "productId": 1,
+      "quantity": 1
+    }];
+
+    it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'addSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'addSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.code).to.be.equal(200);
+    });
+
+    it('A chave data deve ser um objeto e conter as chaves saleId e itemsUpdated', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'addSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.data).to.be.an('object');
+      expect(result.data).to.have.keys('saleId', 'itemsUpdated');
+    });
+
+    it('A chave saleId deve conter o id da venda atualizada', async () => {
+      sinon.stub(salesModel, 'getSaleById').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'addSaleInfo').resolves();
+      const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+      expect(result.data.saleId).to.be.equal(SALE_ID);
+    });
+
+    it('A chave itemsUpdated deve conter objetos com as propriedades productId e quantity',
+      async () => {
+        sinon.stub(salesModel, 'getSaleById').resolves(true);
+        sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+        sinon.stub(salesModel, 'addSaleInfo').resolves();
+        const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
+        expect(result.data.itemsUpdated).to.be.an('array');
+        result.data.itemsUpdated.forEach((item) => {
+          expect(item).to.have.keys('productId', 'quantity');
+        });
+      });
+  });
+});
+
 describe('Services - Ao excluir uma venda do banco de dados', () => {
   beforeEach(sinon.restore);
   const SALE_ID = 2;
