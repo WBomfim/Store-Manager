@@ -128,6 +128,81 @@ describe('Services - Ao buscar um produto pelo id', () => {
   });
 });
 
+describe('Services - Ao pesquisar um produto pelo nome', () => {
+  beforeEach(sinon.restore);
+  const NAME_TEST = 'Martelo';
+
+  describe('Quando não for recebido o parametro "name"', () => {
+    it('Deve retornar todos os produtos cadastrados', async () => {
+      const PRODUCTS_TEST = [
+        { id: 1, name: "Martelo de Thor" },
+        { id: 2, name: "Traje de encolhimento" }
+      ];
+      sinon.stub(productsModel, 'getAllProducts').resolves(PRODUCTS_TEST);
+      const result = await productsService.searchProduct();
+      expect(result.data).to.be.an('array');
+      expect(result.data).to.have.lengthOf(2);
+    });
+  });
+
+  describe('Quando o produto não existir', () => {
+    it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(null);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'data');
+    })
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(null);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result.code).to.be.equal(200);
+    });
+
+    it('A chave data deve conter um array vazio', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(null);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result.data).to.be.an('array');
+      expect(result.data).to.be.empty;
+    });
+  });
+
+  describe('Quando o produto ou produtos existir', () => {
+    const PRODUCTS_TEST = [
+      { id: 1, name: "Martelo de Thor" },
+      { id: 2, name: "Traje de encolhimento" }
+    ];
+
+    it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result).to.be.an('object');
+      expect(result).to.have.keys('code', 'data');
+    });
+
+    it('A chave code deve conter o código 200', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result.code).to.be.equal(200);
+    });
+
+    it('A chave data deve conter um array com objetos', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result.data).to.be.an('array');
+      result.data.forEach(product => {
+        expect(product).to.be.an('object');
+      });
+    });
+
+    it('Os elementos desse array possuem as propriedades id e name', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
+      const result = await productsService.searchProduct(NAME_TEST);
+      expect(result.data[0]).to.have.keys('id', 'name');
+    });
+  });
+});
+
 describe('Services - Ao criar um novo produto', () => {
   beforeEach(sinon.restore);
   const CORRECT_NAME_TEST = 'Martelo de Thor';
