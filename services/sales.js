@@ -16,15 +16,12 @@ const getSaleById = async (id) => {
 const addSale = async (sales) => {
   const error = await validateSaleInfos(sales);
   if (error) return error;
-
   const saleId = await salesModel.addSale();
   if (!saleId) return { code: 501, error: 'Sale not added' };
-
   const insertSaleInfo = sales.map(({ productId, quantity }) => (
     salesModel.addSaleInfo(saleId, productId, quantity)
   ));
   await Promise.all(insertSaleInfo);
-
   return {
     code: 201,
     data: {
@@ -40,12 +37,10 @@ const updateSale = async (saleId, sales) => {
   const sale = await salesModel.getSaleById(saleId);
   if (!sale) return { code: 404, error: 'Sale not found' };
   await salesModel.deleteSaleInfo(saleId);
-
   const insertSaleInfo = sales.map(({ productId, quantity }) => (
     salesModel.addSaleInfo(saleId, productId, quantity)
   ));
   await Promise.all(insertSaleInfo);
-
   return {
     code: 200,
     data: {
