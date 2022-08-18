@@ -29,13 +29,13 @@ const addProduct = async (product) => {
   };
 };
 
-const updateProduct = async (id, name) => {
-  const error = validateProductName(name);
+const updateProduct = async (id, product) => {
+  const error = validateProductName(product);
   if (error) return error;
   const existsProduct = await productsModel.getProductById(id);
   if (!existsProduct) return { code: 404, error: 'Product not found' };
-  await productsModel.updateProduct(id, name);
-  return { code: 200, data: { id, name } };
+  await productsModel.updateProduct(id, product);
+  return { code: 200, data: { id, name: product } };
 };
 
 const deleteProduct = async (id) => {
