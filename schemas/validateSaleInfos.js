@@ -20,7 +20,6 @@ const validateInfosRequest = (sales) => {
       'any.required': '400|"quantity" is required',
     }),
   }));
-
   const { error } = schema.validate(sales);
   if (error) {
     const [code, message] = error.message.split('|');
@@ -32,10 +31,8 @@ const validateInfosRequest = (sales) => {
 const validateSaleInfos = async (sales) => {
   const dataRequestError = validateInfosRequest(sales);
   if (dataRequestError) return dataRequestError;
-
   const productErros = await validateProducts(sales);
   if (productErros) return productErros;
-
   return false;
 };
 
