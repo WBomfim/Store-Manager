@@ -155,10 +155,10 @@ describe('Models - Ao atualizar um produto no banco de dados', () => {
   const NEW_NAME_TEST = 'Martelo de Thor';
 
   describe('Quando o produto for atualizado com sucesso', () => {
-    it('Deve retornar true', async () => {
-      sinon.stub(connection, 'execute').resolves([{}]);
-      const result = await productsModel.updateProduct(ID_TEST, NEW_NAME_TEST);
-      expect(result).to.be.true;
+    it('A função "updateProduct" deve chamar o "connection.execute"', async () => {
+      const updatedProduct = sinon.stub(connection, 'execute').resolves([{}]);
+      await productsModel.updateProduct(ID_TEST, NEW_NAME_TEST);
+      expect(updatedProduct.called).to.be.true;
     });
   });
 });
@@ -168,10 +168,10 @@ describe('Models - Ao deletar um produto no banco de dados', () => {
   const ID_TEST = 1;
 
   describe('Quando o produto for deletado com sucesso', () => {
-    it('Deve retornar true', async () => {
-      sinon.stub(connection, 'execute').resolves([{}]);
-      const result = await productsModel.deleteProduct(ID_TEST);
-      expect(result).to.be.true;
+    it('A função "deleteProduct" deve chamar o "connection.execute"', async () => {
+      const deletedProduct = sinon.stub(connection, 'execute').resolves([{}]);
+      await productsModel.deleteProduct(ID_TEST);
+      expect(deletedProduct.called).to.be.true;
     });
   });
 });
