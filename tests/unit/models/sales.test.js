@@ -123,3 +123,16 @@ describe('Models - Ao excluir uma venda do banco de dados', () => {
     });
   });
 });
+
+describe('Models - Ao excluir as informações de uma venda do banco de dados', () => {
+  beforeEach(sinon.restore);
+  const ID_TEST = 2;
+
+  describe('Quando as informações da venda são excluídas com sucesso', () => {
+    it('Deve retornar true', async () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+      const result = await salesModel.deleteSaleInfo(ID_TEST);
+      expect(result).to.be.true;
+    });
+  });
+});
