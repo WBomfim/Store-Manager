@@ -131,6 +131,142 @@ describe('Controllers - Quando chamar o controller getProductById', () => {
   });
 });
 
+describe('Controllers - Quando chamar o controller searchProduct', () => {
+  const req = {};
+  const res = {};
+
+  describe('Não enviando o nome do produto na URL devera buscar todos os produtos', () => {
+    describe('Quando ocorre um erro ao buscar todos os produtos', () => {
+      before(() => {
+        req.query = {};
+        res.status = sinon.stub().returnsThis();
+        res.json = sinon.stub().returns();
+        const OBJECT_ERROR = { code: 404, error: 'Products not found' };
+        sinon.stub(productsService, 'searchProduct').resolves(OBJECT_ERROR);
+      });
+      
+      after(() => productsService.searchProduct.restore());
+      
+      it('Deve retornar o status com o código 404', async () => {
+        await productsController.searchProduct(req, res);
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+      
+      it('Deve retornar o objeto com a menssagem de erro "Products not found"', async () => {
+        const OBJECT_RES = { message: 'Products not found' };
+        await productsController.searchProduct(req, res);
+        expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+      });
+    });
+
+    describe('Quando a busca é realizada com sucesso', () => {
+      before(() => {
+        req.query = {};
+        res.status = sinon.stub().returnsThis();
+        res.json = sinon.stub().returns();
+        const OBJECT_DATA = {
+          code: 200,
+          data: [
+            {
+              "id": 1,
+              "name": "Martelo de Thor",
+            },
+            {
+              "id": 2,
+              "name": "Traje de encolhimento",
+            }
+          ]
+        };
+        sinon.stub(productsService, 'searchProduct').resolves(OBJECT_DATA);
+      });
+  
+      after(() => productsService.searchProduct.restore());
+  
+      it('Deve retornar o status com o código 200', async () => {
+        await productsController.searchProduct(req, res);
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+  
+      it('Deve retornar um array com objetos contendo os produtos', async () => {
+        const ARRAY_RES = [
+          {
+            "id": 1,
+            "name": "Martelo de Thor",
+          },
+          {
+            "id": 2,
+            "name": "Traje de encolhimento",
+          }
+        ];
+        await productsController.searchProduct(req, res);
+        expect(res.json.calledWith(ARRAY_RES)).to.be.true;
+      });
+    });
+  });
+
+  describe('E o produto não for encontrado', () => {
+    before(() => {
+      req.query = { q: 'Martelo' };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_DATA = {
+        code: 200,
+        data: []
+      };
+      sinon.stub(productsService, 'searchProduct').resolves(OBJECT_DATA);
+    });
+
+    after(() => productsService.searchProduct.restore());
+
+    it('Deve retornar o status com o código 200', async () => {
+      await productsController.searchProduct(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Deve retornar um array vazio', async () => {
+      const ARRAY_RES = [];
+      await productsController.searchProduct(req, res);
+      expect(res.json.calledWith(ARRAY_RES)).to.be.true;
+    });
+  });
+
+  describe('E o produto ou produtos forem encontrados', () => {
+    before(() => {
+      req.query = { q: 'Martelo' };
+      res.status = sinon.stub().returnsThis();
+      res.json = sinon.stub().returns();
+      const OBJECT_DATA = {
+        code: 200,
+        data: [
+          {
+            "id": 1,
+            "name": "Martelo de Thor",
+          }
+        ]
+      };
+      sinon.stub(productsService, 'searchProduct').resolves(OBJECT_DATA);
+    });
+
+    after(() => productsService.searchProduct.restore());
+
+    it('Deve retornar o status com o código 200', async () => {
+      await productsController.searchProduct(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Deve retornar um array com objetos contendo os produtos', async () => {
+      const ARRAY_RES = [
+        {
+          "id": 1,
+          "name": "Martelo de Thor",
+        }
+      ];
+      await productsController.searchProduct(req, res);
+      expect(res.json.calledWith(ARRAY_RES)).to.be.true;
+    });
+  });
+});
+
 describe('Controllers - Quando chamar o controller addProduct', () => {
   const req = {};
   const res = {};
