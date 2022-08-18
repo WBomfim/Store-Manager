@@ -412,30 +412,6 @@ describe('Services - Ao atualizar um produto', () => {
     });
   });
 
-  describe('Quando o produto não é atualizado no banco de dados', () => {
-    const CORRECT_NAME_TEST = 'Martelo do Batman';
-
-    it('Deve retornar um objeto com as chaves code e error', async () => {
-      sinon.stub(productsModel, 'updateProduct').resolves();
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result).to.be.an('object');
-      expect(result).to.have.keys('code', 'error');
-    });
-
-    it('A chave code deve conter o código 501', async () => {
-      sinon.stub(productsModel, 'updateProduct').resolves();
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(501);
-    });
-
-    it('A chave error deve conter a mensagem "Product not updated"', async () => {
-      const ERROR_MESSAGE = 'Product not updated';
-      sinon.stub(productsModel, 'updateProduct').resolves();
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
-    });
-  });
-
   describe('Quando o produto é atualizado no banco de dados', () => {
     const CORRECT_NAME_TEST = 'Martelo do Batman';
     const RETURN_PRODUCT_TEST = { id: ID_TEST, name: 'Martelo do Thor' };
@@ -486,32 +462,6 @@ describe('Quando um produto é excluído', () => {
     it('A chave error deve conter a mensagem "Product not found"', async () => {
       const ERROR_MESSAGE = 'Product not found';
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
-    });
-  });
-
-  describe('Quando o produto não é excluído do banco de dados por algum motivo', () => {
-    const RETURN_PRODUCT_TEST = { id: ID_TEST, name: 'Martelo do Thor' };
-    it('Deve retornar um objeto com as chaves code e error', async () => {
-      sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
-      sinon.stub(productsModel, 'deleteProduct').resolves();
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result).to.be.an('object');
-      expect(result).to.have.keys('code', 'error');
-    });
-
-    it('A chave code deve conter o código 501', async () => {
-      sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
-      sinon.stub(productsModel, 'deleteProduct').resolves();
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result.code).to.be.equal(501);
-    });
-
-    it('A chave error deve conter a mensagem "Product not deleted"', async () => {
-      const ERROR_MESSAGE = 'Product not deleted';
-      sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
-      sinon.stub(productsModel, 'deleteProduct').resolves();
       const result = await productsService.deleteProduct(ID_TEST);
       expect(result.error).to.be.equal(ERROR_MESSAGE);
     });
