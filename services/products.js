@@ -13,6 +13,13 @@ const getProductById = async (id) => {
   return { code: 200, data: product };
 };
 
+const searchProduct = async (name) => {
+  if (!name) return getAllProducts();
+  const products = await productsModel.searchProduct(name);
+  if (!products) return { code: 200, data: [] };
+  return { code: 200, data: products };
+};
+
 const addProduct = async (product) => {
   const error = validateProductName(product);
   if (error) return error;
@@ -43,6 +50,7 @@ const deleteProduct = async (id) => {
 module.exports = {
   getAllProducts,
   getProductById,
+  searchProduct,
   addProduct,
   updateProduct,
   deleteProduct,
