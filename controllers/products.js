@@ -1,57 +1,57 @@
 const productsService = require('../services/products');
 
 const getAllProducts = async (_req, res) => {
-  const products = await productsService.getAllProducts();
-  if (products.error) {
-    return res.status(products.code).json({ message: products.error });
+  const { code, data, error } = await productsService.getAllProducts();
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(products.code).json(products.data);
+  return res.status(code).json(data);
 };
 
 const getProductById = async (req, res) => {
   const { id } = req.params;
-  const product = await productsService.getProductById(id);
-  if (product.error) {
-    return res.status(product.code).json({ message: product.error });
+  const { code, data, error } = await productsService.getProductById(id);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(product.code).json(product.data);
+  return res.status(code).json(data);
 };
 
 const searchProduct = async (req, res) => {
   const { q } = req.query;
-  const products = await productsService.searchProduct(q);
-  if (products.error) {
-    return res.status(products.code).json({ message: products.error });
+  const { code, data, error } = await productsService.searchProduct(q);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(products.code).json(products.data);
+  return res.status(code).json(data);
 };
 
 const addProduct = async (req, res) => {
   const { name } = req.body;
-  const newProduct = await productsService.addProduct(name);
-  if (newProduct.error) {
-    return res.status(newProduct.code).json({ message: newProduct.error });
+  const { code, data, error } = await productsService.addProduct(name);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(newProduct.code).json(newProduct.data);
+  return res.status(code).json(data);
 };
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
-  const updatedProduct = await productsService.updateProduct(id, name);
-  if (updatedProduct.error) {
-    return res.status(updatedProduct.code).json({ message: updatedProduct.error });
+  const { code, data, error } = await productsService.updateProduct(id, name);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(updatedProduct.code).json(updatedProduct.data);
+  return res.status(code).json(data);
 };
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  const deletedProduct = await productsService.deleteProduct(id);
-  if (deletedProduct.error) {
-    return res.status(deletedProduct.code).json({ message: deletedProduct.error });
+  const { code, data, error } = await productsService.deleteProduct(id);
+  if (error) {
+    return res.status(code).json({ message: error });
   }
-  return res.status(deletedProduct.code).json(deletedProduct.data);
+  return res.status(code).json(data);
 };
 
 module.exports = {
