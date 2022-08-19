@@ -493,6 +493,7 @@ describe('Services - Ao atualizar uma venda', () => {
     const SALE_CORRECT_TEST = [{ productId: 1, quantity: 1 }];
 
     it('Deve retornar um objeto com as chaves code e error', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(null);
       const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
       expect(result).to.be.an('object');
@@ -500,12 +501,14 @@ describe('Services - Ao atualizar uma venda', () => {
     });
 
     it('A chave code deve conter o código 404', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(null);
       const { code } = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
       expect(code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Sale not found"', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(null);
       const ERROR_MESSAGE = 'Sale not found';
       const { error } = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
@@ -517,8 +520,9 @@ describe('Services - Ao atualizar uma venda', () => {
     const SALE_CORRECT_TEST = [{ productId: 1, quantity: 1 }];
 
     it('Deve retornar um objeto com as chaves code e data', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(true);
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
       sinon.stub(salesModel, 'addSaleInfo').resolves();
       const result = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
       expect(result).to.be.an('object');
@@ -526,16 +530,18 @@ describe('Services - Ao atualizar uma venda', () => {
     });
 
     it('A chave code deve conter o código 200', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(true);
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
       sinon.stub(salesModel, 'addSaleInfo').resolves();
       const { code } = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
       expect(code).to.be.equal(200);
     });
 
     it('A chave data deve ser um objeto e conter as chaves saleId e itemsUpdated', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(true);
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
       sinon.stub(salesModel, 'addSaleInfo').resolves();
       const { data } = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
       expect(data).to.be.an('object');
@@ -543,8 +549,9 @@ describe('Services - Ao atualizar uma venda', () => {
     });
 
     it('A chave saleId deve conter o id da venda atualizada', async () => {
+      sinon.stub(productsModel, 'getProductById').resolves(true);
       sinon.stub(salesModel, 'getSaleById').resolves(true);
-      sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+      sinon.stub(salesModel, 'deleteSaleInfo').resolves();
       sinon.stub(salesModel, 'addSaleInfo').resolves();
       const { data: { saleId } } = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
       expect(saleId).to.be.equal(SALE_ID);
@@ -552,8 +559,9 @@ describe('Services - Ao atualizar uma venda', () => {
 
     it('A chave itemsUpdated deve conter objetos com as propriedades productId e quantity',
       async () => {
+        sinon.stub(productsModel, 'getProductById').resolves(true);
         sinon.stub(salesModel, 'getSaleById').resolves(true);
-        sinon.stub(salesModel, 'deleteSaleInfo').resolves(true);
+        sinon.stub(salesModel, 'deleteSaleInfo').resolves();
         sinon.stub(salesModel, 'addSaleInfo').resolves();
         const { data: { itemsUpdated } } = await salesService.updateSale(SALE_ID, SALE_CORRECT_TEST);
         expect(itemsUpdated).to.be.an('array');
