@@ -115,10 +115,11 @@ describe('Controllers - Quando chamar o controller addSale', () => {
       expect(res.status.calledWith(422)).to.be.true;
     });
 
-    it('Deve retornar o objeto com a menssagem de erro "quantity" must be greater than or equal to 1', async () => {
-      const OBJECT_RES = { message: '"quantity" must be greater than or equal to 1' };
-      await salesController.addSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    it('Deve retornar o objeto com a menssagem de erro "quantity" must be greater than or equal to 1',
+      async () => {
+        const OBJECT_RES = { message: '"quantity" must be greater than or equal to 1' };
+        await salesController.addSale(req, res);
+        expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -157,10 +158,8 @@ describe('Controllers - Quando chamar o controller addSale', () => {
           "quantity": 5
         }
       ];
-
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-
       const OBJECT_OK = {
         code: 200,
         data: {
@@ -176,7 +175,6 @@ describe('Controllers - Quando chamar o controller addSale', () => {
           ]
         }
       };
-
       sinon.stub(salesService, 'addSale').resolves(OBJECT_OK);
     });
 
@@ -201,7 +199,6 @@ describe('Controllers - Quando chamar o controller addSale', () => {
           }
         ]
       };
-      
       await salesController.addSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -280,7 +277,6 @@ describe('Controllers - Quando chamar o controller getAllSeles', () => {
           "quantity": 2
         }
       ];
-      
       await salesController.getAllSales(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -357,10 +353,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
       req.body = [{ "quantity": 1 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 400,
-        error: '"productId" is required'
-      };
+      const OBJECT_ERROR = { code: 400, error: '"productId" is required' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -372,9 +365,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
     });
 
     it('Deve retornar o objeto com a menssagem de erro "productId" is required', async () => {
-      const OBJECT_RES = {
-        message: '"productId" is required'
-      };
+      const OBJECT_RES = { message: '"productId" is required' };
       await salesController.updateSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -386,10 +377,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
       req.body = [{ "productId": 1 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 400,
-        error: '"quantity" is required'
-      };
+      const OBJECT_ERROR = { code: 400, error: '"quantity" is required' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -401,9 +389,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
     });
 
     it('Deve retornar o objeto com a menssagem de erro "quantity" is required', async () => {
-      const OBJECT_RES = {
-        message: '"quantity" is required'
-      };
+      const OBJECT_RES = { message: '"quantity" is required' };
       await salesController.updateSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -412,16 +398,10 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
   describe('E o id do produto não é um número', () => {
     before(() => {
       req.params = { id: 1 };
-      req.body = [{
-        "productId": "A",
-        "quantity": 1
-      }];
+      req.body = [{ "productId": "A", "quantity": 1 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 400,
-        error: '"productId" must be a number'
-      };
+      const OBJECT_ERROR = { code: 400, error: '"productId" must be a number' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -433,9 +413,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
     });
 
     it('Deve retornar o objeto com a menssagem de erro "productId" must be a number', async () => {
-      const OBJECT_RES = {
-        message: '"productId" must be a number'
-      };
+      const OBJECT_RES = { message: '"productId" must be a number' };
       await salesController.updateSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -444,16 +422,10 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
   describe('E a quantidade do produto não é um número', () => {
     before(() => {
       req.params = { id: 1 };
-      req.body = [{
-        "productId": 1,
-        "quantity": "A"
-      }];
+      req.body = [{ "productId": 1, "quantity": "A" }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 400,
-        error: '"quantity" must be a number'
-      };
+      const OBJECT_ERROR = { code: 400, error: '"quantity" must be a number' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -465,9 +437,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
     });
 
     it('Deve retornar o objeto com a menssagem de erro "quantity" must be a number', async () => {
-      const OBJECT_RES = {
-        message: '"quantity" must be a number'
-      };
+      const OBJECT_RES = { message: '"quantity" must be a number' };
       await salesController.updateSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -476,16 +446,10 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
   describe('E a quantidade do produto é menor ou igual a 0', () => {
     before(() => {
       req.params = { id: 1 };
-      req.body = [{
-        "productId": 1,
-        "quantity": 0
-      }];
+      req.body = [{ "productId": 1, "quantity": 0 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 422,
-        error: '"quantity" must be greater than or equal to 1'
-      };
+      const OBJECT_ERROR = { code: 422, error: '"quantity" must be greater than or equal to 1' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -496,28 +460,21 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
       expect(res.status.calledWith(422)).to.be.true;
     });
 
-    it('Deve retornar o objeto com a menssagem de erro "quantity" must be greater than or equal to 1', async () => {
-      const OBJECT_RES = {
-        message: '"quantity" must be greater than or equal to 1'
-      };
-      await salesController.updateSale(req, res);
-      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    it('Deve retornar o objeto com a menssagem de erro "quantity" must be greater than or equal to 1',
+      async () => {
+        const OBJECT_RES = { message: '"quantity" must be greater than or equal to 1' };
+        await salesController.updateSale(req, res);
+        expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
   describe('E o produto enviado na requisição não está cadastrado no banco de dados', () => {
     before(() => {
       req.params = { id: 1 };
-      req.body = [{
-        "productId": 100,
-        "quantity": 1
-      }];
+      req.body = [{ "productId": 100, "quantity": 1 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 404,
-        error: 'Product not found'
-      };
+      const OBJECT_ERROR = { code: 404, error: 'Product not found' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -529,9 +486,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
     });
 
     it('Deve retornar o objeto com a menssagem de erro "Product not found"', async () => {
-      const OBJECT_RES = {
-        message: 'Product not found'
-      };
+      const OBJECT_RES = { message: 'Product not found' };
       await salesController.updateSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -540,16 +495,10 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
   describe('E a venda a ser atualizada não existe no banco de dados', () => {
     before(() => {
       req.params = { id: 100 };
-      req.body = [{
-        "productId": 1,
-        "quantity": 1
-      }];
+      req.body = [{ "productId": 1, "quantity": 1 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = {
-        code: 404,
-        error: 'Sale not found'
-      };
+      const OBJECT_ERROR = { code: 404, error: 'Sale not found' };
       sinon.stub(salesService, 'updateSale').resolves(OBJECT_ERROR);
     });
 
@@ -561,9 +510,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
     });
 
     it('Deve retornar o objeto com a menssagem de erro "Sale not found"', async () => {
-      const OBJECT_RES = {
-        message: 'Sale not found'
-      };
+      const OBJECT_RES = { message: 'Sale not found' };
       await salesController.updateSale(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -572,10 +519,7 @@ describe('Controllers - Quando chamar o controller updateSale', () => {
   describe('E a venda é atualizada com sucesso', () => {
     before(() => {
       req.params = { id: 1 };
-      req.body = [{
-        "productId": 1,
-        "quantity": 1
-      }];
+      req.body = [{ "productId": 1, "quantity": 1 }];
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
       const OBJECT_SUCCESS = {

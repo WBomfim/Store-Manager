@@ -6,6 +6,7 @@ const productsController = require('../../../controllers/products');
 describe('Controllers - Quando chamar o controller getAllProducts', () => {
   const req = {};
   const res = {};
+
   describe('Não havendo produtos cadastrados', () => {
     before(() => {
       res.status = sinon.stub().returnsThis();
@@ -75,6 +76,7 @@ describe('Controllers - Quando chamar o controller getAllProducts', () => {
 describe('Controllers - Quando chamar o controller getProductById', () => {
   const req = {};
   const res = {};
+
   describe('Não havendo produtos cadastrados', () => {
     before(() => {
       req.params = { id: 1 };
@@ -299,7 +301,7 @@ describe('Controllers - Quando chamar o controller addProduct', () => {
       req.body = { name: 12345 };
       res.status = sinon.stub().returnsThis();
       res.json = sinon.stub().returns();
-      const OBJECT_ERROR = { code: 400, error: '"name" must be a string"' };
+      const OBJECT_ERROR = { code: 400, error: '"name" must be a string' };
       sinon.stub(productsService, 'addProduct').resolves(OBJECT_ERROR);
     });
 
@@ -310,8 +312,8 @@ describe('Controllers - Quando chamar o controller addProduct', () => {
       expect(res.status.calledWith(400)).to.be.true;
     });
 
-    it('Deve retornar o objeto com a menssagem de erro "name" must only contain alpha-numeric characters"', async () => {
-      const OBJECT_RES = { message: '"name" must be a string"' };
+    it('Deve retornar o objeto com a menssagem de erro ""name" must be a string"', async () => {
+      const OBJECT_RES = { message: '"name" must be a string' };
       await productsController.addProduct(req, res);
       expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
@@ -437,7 +439,7 @@ describe('Controllers - Quando chamar o controller updateProduct', () => {
       res.json = sinon.stub().returns();
       const OBJECT_ERROR = {
         code: 400,
-        error: '"name" must be a string"'
+        error: '"name" must be a string'
       };
       sinon.stub(productsService, 'updateProduct').resolves(OBJECT_ERROR);
     });
@@ -449,13 +451,10 @@ describe('Controllers - Quando chamar o controller updateProduct', () => {
       expect(res.status.calledWith(400)).to.be.true;
     });
 
-    it('Deve retornar o objeto com a menssagem de erro "name" must only contain alpha-numeric characters"',
-      async () => {
-        const OBJECT_RES = {
-          message: '"name" must be a string"'
-        };
-        await productsController.updateProduct(req, res);
-        expect(res.json.calledWith(OBJECT_RES)).to.be.true;
+    it('Deve retornar o objeto com a menssagem de erro "name" must be a string"', async () => {
+      const OBJECT_RES = { message: '"name" must be a string' };
+      await productsController.updateProduct(req, res);
+      expect(res.json.calledWith(OBJECT_RES)).to.be.true;
     });
   });
 
@@ -479,7 +478,7 @@ describe('Controllers - Quando chamar o controller updateProduct', () => {
       expect(res.status.calledWith(422)).to.be.true;
     });
 
-    it('Deve retornar o objeto com a menssagem de erro "name" length must be at least 5 characters long"',
+    it('Deve retornar o objeto com a menssagem de erro "name" length must be at least 5 characters long',
       async () => {
         const OBJECT_RES = {
           message: '"name" length must be at least 5 characters long'
