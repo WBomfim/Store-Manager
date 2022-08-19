@@ -21,6 +21,7 @@ describe('Models - Ao buscar todas as vendas no banco de dados', () => {
       { saleId: 2, date: '2021-09-09T06:54:29.000Z', productId: 1, quantity: 1 },
       { saleId: 2, date: '2021-09-09T07:44:29.000Z', productId: 3, quantity: 2 },
     ];
+    
     it('Deve retornar um array com as vendas', async () => {
       sinon.stub(connection, 'execute').resolves([RETURN_SALES]);
       const result = await salesModel.getAllSales();

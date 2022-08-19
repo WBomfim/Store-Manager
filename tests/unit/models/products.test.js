@@ -61,10 +61,7 @@ describe('Models - Ao buscar um produto pelo id', () => {
   });
 
   describe('Quando o produto existir', () => {
-    const PRODUCT_TESTE = {
-      "id": 1,
-      "name": "Martelo de Thor",
-    };
+    const PRODUCT_TESTE = { id: 1, name: "Martelo de Thor" };
 
     it('Deve retornar um objeto', async () => {
       sinon.stub(connection, 'execute').resolves([[PRODUCT_TESTE]]);
