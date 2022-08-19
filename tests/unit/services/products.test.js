@@ -16,15 +16,15 @@ describe('Services - Ao buscar todos os produtos cadastrados no branco de dados'
 
     it('A chave code deve conter o código 404', async () => {
       sinon.stub(productsModel, 'getAllProducts').resolves(null);
-      const result = await productsService.getAllProducts();
-      expect(result.code).to.be.equal(404);
+      const { code } = await productsService.getAllProducts();
+      expect(code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Products not found"', async () => {
       const ERROR_MESSAGE = 'Products not found';
       sinon.stub(productsModel, 'getAllProducts').resolves(null);
-      const result = await productsService.getAllProducts();
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.getAllProducts();
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -48,23 +48,25 @@ describe('Services - Ao buscar todos os produtos cadastrados no branco de dados'
 
     it('A chave code deve conter o código 200', async () => {
       sinon.stub(productsModel, 'getAllProducts').resolves(PRODUCTS_TEST);
-      const result = await productsService.getAllProducts();
-      expect(result.code).to.be.equal(200);
+      const { code } = await productsService.getAllProducts();
+      expect(code).to.be.equal(200);
     });
 
     it('A chave data deve conter um array com objetos', async () => {
       sinon.stub(productsModel, 'getAllProducts').resolves(PRODUCTS_TEST);
-      const result = await productsService.getAllProducts();
-      expect(result.data).to.be.an('array');
-      result.data.forEach(product => {
+      const { data } = await productsService.getAllProducts();
+      expect(data).to.be.an('array');
+      data.forEach(product => {
         expect(product).to.be.an('object');
       });
     });
 
     it('Os elementos desse array possuem as propriedades id e name', async () => {
       sinon.stub(productsModel, 'getAllProducts').resolves(PRODUCTS_TEST);
-      const result = await productsService.getAllProducts();
-      expect(result.data[0]).to.have.keys('id', 'name');
+      const { data } = await productsService.getAllProducts();
+      data.forEach(product => {
+        expect(product).to.have.keys('id', 'name');
+      });
     });
   });
 });
@@ -83,23 +85,20 @@ describe('Services - Ao buscar um produto pelo id', () => {
 
     it('A chave code deve conter o código 404', async () => { 
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.getProductById(ID_TEST);
-      expect(result.code).to.be.equal(404);
+      const { code } = await productsService.getProductById(ID_TEST);
+      expect(code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Product not found"', async () => {
       const ERROR_MESSAGE = 'Product not found';
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.getProductById(ID_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.getProductById(ID_TEST);
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
   describe('Quando o produto existir', () => {
-    const PRODUCT_TEST = {
-      "id": 1,
-      "name": "Martelo de Thor",
-    };
+    const PRODUCT_TEST = { id: 1, name: "Martelo de Thor" };
 
     it('Deve retornar um objeto com as chaves code e data', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(PRODUCT_TEST);
@@ -110,20 +109,20 @@ describe('Services - Ao buscar um produto pelo id', () => {
 
     it('A chave code deve conter o código 200', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(PRODUCT_TEST);
-      const result = await productsService.getProductById(ID_TEST);
-      expect(result.code).to.be.equal(200);
+      const { code } = await productsService.getProductById(ID_TEST);
+      expect(code).to.be.equal(200);
     });
 
     it('A chave data deve conter um objeto', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(PRODUCT_TEST);
-      const result = await productsService.getProductById(ID_TEST);
-      expect(result.data).to.be.an('object');
+      const { data } = await productsService.getProductById(ID_TEST);
+      expect(data).to.be.an('object');
     });
 
     it('O objeto possui as propriedades id e name', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(PRODUCT_TEST);
-      const result = await productsService.getProductById(ID_TEST);
-      expect(result.data).to.have.keys('id', 'name');
+      const { data } = await productsService.getProductById(ID_TEST);
+      expect(data).to.have.keys('id', 'name');
     });
   });
 });
@@ -139,9 +138,9 @@ describe('Services - Ao pesquisar um produto pelo nome', () => {
         { id: 2, name: "Traje de encolhimento" }
       ];
       sinon.stub(productsModel, 'getAllProducts').resolves(PRODUCTS_TEST);
-      const result = await productsService.searchProduct();
-      expect(result.data).to.be.an('array');
-      expect(result.data).to.have.lengthOf(2);
+      const { data } = await productsService.searchProduct();
+      expect(data).to.be.an('array');
+      expect(data).to.have.lengthOf(2);
     });
   });
 
@@ -155,15 +154,15 @@ describe('Services - Ao pesquisar um produto pelo nome', () => {
 
     it('A chave code deve conter o código 200', async () => {
       sinon.stub(productsModel, 'searchProduct').resolves(null);
-      const result = await productsService.searchProduct(NAME_TEST);
-      expect(result.code).to.be.equal(200);
+      const { code } = await productsService.searchProduct(NAME_TEST);
+      expect(code).to.be.equal(200);
     });
 
     it('A chave data deve conter um array vazio', async () => {
       sinon.stub(productsModel, 'searchProduct').resolves(null);
-      const result = await productsService.searchProduct(NAME_TEST);
-      expect(result.data).to.be.an('array');
-      expect(result.data).to.be.empty;
+      const { data } = await productsService.searchProduct(NAME_TEST);
+      expect(data).to.be.an('array');
+      expect(data).to.be.empty;
     });
   });
 
@@ -182,23 +181,25 @@ describe('Services - Ao pesquisar um produto pelo nome', () => {
 
     it('A chave code deve conter o código 200', async () => {
       sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
-      const result = await productsService.searchProduct(NAME_TEST);
-      expect(result.code).to.be.equal(200);
+      const { code } = await productsService.searchProduct(NAME_TEST);
+      expect(code).to.be.equal(200);
     });
 
     it('A chave data deve conter um array com objetos', async () => {
       sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
-      const result = await productsService.searchProduct(NAME_TEST);
-      expect(result.data).to.be.an('array');
-      result.data.forEach(product => {
+      const { data } = await productsService.searchProduct(NAME_TEST);
+      expect(data).to.be.an('array');
+      data.forEach((product) => {
         expect(product).to.be.an('object');
       });
     });
 
     it('Os elementos desse array possuem as propriedades id e name', async () => {
       sinon.stub(productsModel, 'searchProduct').resolves(PRODUCTS_TEST);
-      const result = await productsService.searchProduct(NAME_TEST);
-      expect(result.data[0]).to.have.keys('id', 'name');
+      const { data } = await productsService.searchProduct(NAME_TEST);
+      data.forEach((product) => {
+        expect(product).to.have.keys('id', 'name');
+      });
     });
   });
 });
@@ -216,14 +217,14 @@ describe('Services - Ao criar um novo produto', () => {
     });
 
     it('A chave code deve conter o código 400', async () => {
-      const result = await productsService.updateProduct();
-      expect(result.code).to.be.equal(400);
+      const { code } = await productsService.updateProduct();
+      expect(code).to.be.equal(400);
     });
 
     it('A chave error deve conter a mensagem ""name" is required"', async () => {
       const ERROR_MESSAGE = '"name" is required';
-      const result = await productsService.updateProduct();
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.updateProduct();
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -237,14 +238,14 @@ describe('Services - Ao criar um novo produto', () => {
     });
 
     it('A chave code deve conter o código 400', async () => {
-      const result = await productsService.addProduct(INCORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(400);
+      const { code } = await productsService.addProduct(INCORRECT_NAME_TEST);
+      expect(code).to.be.equal(400);
     });
 
     it('A chave error deve conter a mensagem ""name" must be a string"', async () => {
       const ERROR_MESSAGE = '"name" must be a string';
-      const result = await productsService.addProduct(INCORRECT_NAME_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.addProduct(INCORRECT_NAME_TEST);
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -257,15 +258,15 @@ describe('Services - Ao criar um novo produto', () => {
     });
 
     it('A chave code deve conter o código 422', async () => {
-      const result = await productsService.addProduct(INCORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(422);
+      const { code } = await productsService.addProduct(INCORRECT_NAME_TEST);
+      expect(code).to.be.equal(422);
     });
 
     it('A chave error deve conter a mensagem ""name" length must be at least 5 characters long"',
       async () => {
         const ERROR_MESSAGE = '"name" length must be at least 5 characters long';
-        const result = await productsService.addProduct(INCORRECT_NAME_TEST);
-        expect(result.error).to.be.equal(ERROR_MESSAGE);
+        const { error } = await productsService.addProduct(INCORRECT_NAME_TEST);
+        expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -279,15 +280,15 @@ describe('Services - Ao criar um novo produto', () => {
 
     it('A chave code deve conter o código 501', async () => {
       sinon.stub(productsModel, 'addProduct').resolves(null);
-      const result = await productsService.addProduct(CORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(501);
+      const { code } = await productsService.addProduct(CORRECT_NAME_TEST);
+      expect(code).to.be.equal(501);
     });
 
     it('A chave error deve conter a mensagem "Product not added"', async () => {
       const ERROR_MESSAGE = 'Product not added';
       sinon.stub(productsModel, 'addProduct').resolves(null);
-      const result = await productsService.addProduct(CORRECT_NAME_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.addProduct(CORRECT_NAME_TEST);
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -301,22 +302,22 @@ describe('Services - Ao criar um novo produto', () => {
 
     it('A chave code deve conter o código 201', async () => {
       sinon.stub(productsModel, 'addProduct').resolves(INSERT_ID_TEST);
-      const result = await productsService.addProduct(CORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(201);
+      const { code } = await productsService.addProduct(CORRECT_NAME_TEST);
+      expect(code).to.be.equal(201);
     });
 
     it('A chave data deve conter um objeto com as chaves id e name', async () => {
       sinon.stub(productsModel, 'addProduct').resolves(INSERT_ID_TEST);
-      const result = await productsService.addProduct(CORRECT_NAME_TEST);
-      expect(result.data).to.be.an('object');
-      expect(result.data).to.have.keys('id', 'name');
+      const { data } = await productsService.addProduct(CORRECT_NAME_TEST);
+      expect(data).to.be.an('object');
+      expect(data).to.have.keys('id', 'name');
     });
 
     it('As informações da chave data devem estar corretas', async () => {
       const CORRECT_DATA = { id: INSERT_ID_TEST, name: CORRECT_NAME_TEST };
       sinon.stub(productsModel, 'addProduct').resolves(INSERT_ID_TEST);
-      const result = await productsService.addProduct(CORRECT_NAME_TEST);
-      expect(result.data).to.be.deep.equal(CORRECT_DATA);
+      const { data } = await productsService.addProduct(CORRECT_NAME_TEST);
+      expect(data).to.be.deep.equal(CORRECT_DATA);
     });
   });
 });
@@ -335,14 +336,14 @@ describe('Services - Ao atualizar um produto', () => {
     });
 
     it('A chave code deve conter o código 400', async () => {
-      const result = await productsService.updateProduct();
-      expect(result.code).to.be.equal(400);
+      const { code } = await productsService.updateProduct();
+      expect(code).to.be.equal(400);
     });
 
     it('A chave error deve conter a mensagem ""name" is required"', async () => {
       const ERROR_MESSAGE = '"name" is required';
-      const result = await productsService.updateProduct();
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.updateProduct();
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -356,14 +357,14 @@ describe('Services - Ao atualizar um produto', () => {
     });
 
     it('A chave code deve conter o código 400', async () => {
-      const result = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(400);
+      const { code } = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
+      expect(code).to.be.equal(400);
     });
 
     it('A chave error deve conter a mensagem ""name" must be a string"', async () => {
       const ERROR_MESSAGE = '"name" must be a string';
-      const result = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -376,15 +377,15 @@ describe('Services - Ao atualizar um produto', () => {
     });
 
     it('A chave code deve conter o código 422', async () => {
-      const result = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(422);
+      const { code } = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
+      expect(code).to.be.equal(422);
     });
 
     it('A chave error deve conter a mensagem ""name" length must be at least 5 characters long"',
       async () => {
         const ERROR_MESSAGE = '"name" length must be at least 5 characters long';
-        const result = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
-        expect(result.error).to.be.equal(ERROR_MESSAGE);
+        const { error } = await productsService.updateProduct(ID_TEST, INCORRECT_NAME_TEST);
+        expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -400,15 +401,15 @@ describe('Services - Ao atualizar um produto', () => {
 
     it('A chave code deve conter o código 404', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(404);
+      const { code } = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
+      expect(code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Product not found"', async () => {
       const ERROR_MESSAGE = 'Product not found';
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -427,16 +428,16 @@ describe('Services - Ao atualizar um produto', () => {
     it('A chave code deve conter o código 200', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
       sinon.stub(productsModel, 'updateProduct').resolves(true);
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result.code).to.be.equal(200);
+      const { code } = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
+      expect(code).to.be.equal(200);
     });
 
     it('A chave data deve conter as informações do produto atualizado', async () => {
       const UPDATED_PRODUCT = { id: ID_TEST, name: CORRECT_NAME_TEST };
       sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
       sinon.stub(productsModel, 'updateProduct').resolves(true);
-      const result = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
-      expect(result.data).to.be.deep.equal(UPDATED_PRODUCT);
+      const { data } = await productsService.updateProduct(ID_TEST, CORRECT_NAME_TEST);
+      expect(data).to.be.deep.equal(UPDATED_PRODUCT);
     });
   });
 });
@@ -455,15 +456,15 @@ describe('Quando um produto é excluído', () => {
 
     it('A chave code deve conter o código 404', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result.code).to.be.equal(404);
+      const { code } = await productsService.deleteProduct(ID_TEST);
+      expect(code).to.be.equal(404);
     });
 
     it('A chave error deve conter a mensagem "Product not found"', async () => {
       const ERROR_MESSAGE = 'Product not found';
       sinon.stub(productsModel, 'getProductById').resolves(null);
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result.error).to.be.equal(ERROR_MESSAGE);
+      const { error } = await productsService.deleteProduct(ID_TEST);
+      expect(error).to.be.equal(ERROR_MESSAGE);
     });
   });
 
@@ -481,15 +482,15 @@ describe('Quando um produto é excluído', () => {
     it('A chave code deve conter o código 204', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
       sinon.stub(productsModel, 'deleteProduct').resolves(true);
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result.code).to.be.equal(204);
+      const { code } = await productsService.deleteProduct(ID_TEST);
+      expect(code).to.be.equal(204);
     });
 
     it('A chave data deve conter um objeto vazio', async () => {
       sinon.stub(productsModel, 'getProductById').resolves(RETURN_PRODUCT_TEST);
       sinon.stub(productsModel, 'deleteProduct').resolves(true);
-      const result = await productsService.deleteProduct(ID_TEST);
-      expect(result.data).to.be.deep.equal({});
+      const { data } = await productsService.deleteProduct(ID_TEST);
+      expect(data).to.be.deep.equal({});
     });
   });
 });
