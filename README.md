@@ -29,15 +29,20 @@ Requisitos desenvolvidos:
 </details>
 
 <details>
-  <summary>📄 Documentação</summary>
-  
-### Server: `http://localhost:3000`
+  <summary><strong>📄 Documentação</strong></summary>
+
+#### Server: `http://localhost:3000`
+
+<details>
+  <summary><strong>➡️ Produtos</strong></summary>
 
 ## `GET` /products
 
 **Lista todos os produtos cadastrados no banco de dados**
 
-Os produtos possuem `id` e `nome`
+Os produtos possuem `id` e `nome`.
+
+Os retornos seguem os formatos abaixo:
 
 - `Ok` - Response status `200` (application/json):
 
@@ -55,11 +60,158 @@ Os produtos possuem `id` e `nome`
 ]
 ```
 
-- `Bad request` - Response status `404` (application/json):
+- `Not found` - Response status `404` (application/json):
 
 ```bash
 { "message": "Products not found" }
 ```
+
+## `GET` /products/:id
+
+**Lista apenas o produto com o `id` presente na URL**
+
+O produto possui `id` e `nome`.
+
+Os retornos seguem os formatos abaixo:
+
+- `Ok` - Response status `200` (application/json):
+
+```bash
+{
+  "id": 1,
+  "name": "Martelo de Thor",
+}
+```
+
+- `Not found` - Response status `404` (application/json):
+
+```bash
+{ "message": "Product not found" }
+```
+
+## `GET` /products/search
+
+**Lista os produtos conforme o parametro presente na URL**
+
+O produto possui `id` e `nome`.
+
+O query params da requisição deverá seguir o seguinte formato:
+
+```bash
+http://localhost:PORT/products/search?q=nome_do_produto_para_pesquisa
+```
+
+Os retornos seguem os formatos abaixo:
+
+- `Ok` - Response status `200` (application/json):
+
+```bash
+// GET /products/search?q=Martelo
+
+[
+  {
+    "id": 1,
+    "name": "Martelo de Thor",
+  }
+]
+```
+
+- `Ok` - Response status `200` (application/json):
+
+```bash
+// GET /products/search?q=
+
+[
+  {
+    "id": 1,
+    "name": "Martelo de Thor",
+  },
+  {
+    "id": 2,
+    "name": "Traje de encolhimento",
+  }
+  /* ... */
+]
+```
+
+## `POST` /products
+
+**Cadastra um produto no banco de dados**
+
+O nome do produto deve ser enviado no `body` no seguinte formato:
+
+```bash
+{
+  "name": "Produto_X",
+}
+```
+
+Os retornos seguem os formatos abaixo:
+
+- `Created` - Response status `201` (application/json):
+
+```bash
+{
+  "id": 4,  //id criado automaticamente no momento da inserção dos dados.
+  "name": "ProdutoX"
+}
+```
+
+- `Bad request` - Response status `400` (application/json):
+
+```bash
+{ "message": "\"name\" is required"  }
+```
+
+- `Unprocessable Entity` - Response status `422` (application/json):
+
+```bash
+{ "message": "\"name\" length must be at least 5 characters long" }
+```
+
+## `PUT` /products/:id
+
+**Atualiza o produto com o `id` presente na URL**
+
+O novo nome do produto deve ser enviado no `body` no seguinte formato:
+
+```bash
+{
+  "name": "Produto_X_Atualizado",
+}
+```
+
+Os retornos seguem os formatos abaixo:
+
+- `Ok` - Response status `200` (application/json):
+
+```bash
+{
+  "id": 4,
+  "name": "Produto_X_Atualizado"
+}
+```
+
+- `Not found` - Response status `404` (application/json):
+
+```bash
+{ "message": "Product not found" }
+```
+
+## `DELETE` /products/:id
+
+**Deleta o produto com o `id` presente na URL**
+
+Os retornos seguem os formatos abaixo:
+
+- `Deleted - No Content` - Response status `204`.
+
+- `Not found` - Response status `404` (application/json):
+
+```bash
+{ "message": "Product not found" }
+```
+</details>
 </details>
 
 # Instruções para rodar o Projeto
