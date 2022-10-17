@@ -55,7 +55,7 @@ A tabela `sales_products`, é a tabela que faz o relacionamento `N:N` entre `pro
 </details>
   
 <details>
-  <summary><strong>📄 Documentação</strong></summary>
+<summary><strong>📖 Documentação</strong></summary>
 
 ### **Server:**
 ```bash
@@ -63,7 +63,7 @@ http://localhost:3000
 ```
 
 <details>
-  <summary><strong>▶️ Rotas para Produtos</strong></summary>
+<summary><strong>▶️ Rotas para Produtos</strong></summary>
 
 ## `GET` /products
 
@@ -243,7 +243,7 @@ Os retornos seguem os formatos abaixo:
 </details>
 
 <details>
-  <summary><strong>▶️ Rotas para Vendas</strong></summary>
+<summary><strong>▶️ Rotas para Vendas</strong></summary>
 
 ## `GET` /sales
 
@@ -440,7 +440,7 @@ Os retornos seguem os formatos abaixo:
 # Instruções para rodar o projeto
 
 <details>
-  <summary><strong>🛠 Passo a passo</strong></summary><br />
+<summary><strong>🛠 Passo a passo</strong></summary><br />
 
 Clone o repositório
 
@@ -464,6 +464,54 @@ Inicie o projeto
 
 ```bash
   npm start
+```
+</details>
+
+<details>
+<summary><strong>➡️ Variáveis de ambiente</strong></summary><br />
+
+Caso opte por rodar a aplicação localmente, na raiz do projeto **renomeie o arquivo `.env.example` para `.env`** e altere as variáveis de ambiente com seus dados locais. Por exemplo, caso o seu usuário SQL seja `nome` e a senha `1234` seu arquivo ficará desta forma:
+
+```sh
+  MYSQL_HOST=localhost
+  MYSQL_USER=nome
+  MYSQL_PASSWORD=1234
+  MYSQL_DATABASE=StoreManager
+  PORT=3000
+```
+</details>
+
+<details>
+<summary><strong>⏩️ Scripts</strong></summary><br />
+
+Criar o banco de dados e gerar as tabelas:
+
+```sh
+  npm run migration
+```
+
+Limpar e popular o banco de dados:
+
+```sh
+  npm run seed
+```
+
+Iniciar o servidor Node:
+
+```sh
+  npm start
+```
+
+Iniciar o servidor Node com nodemon:
+
+```sh
+  npm run debug
+```
+
+Executar os testes de unidade:
+
+```sh
+  npm run test:mocha
 ```
 </details>
 
