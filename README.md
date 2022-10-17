@@ -31,10 +31,13 @@ Requisitos desenvolvidos:
 <details>
   <summary><strong>📄 Documentação</strong></summary>
 
-#### Server: `http://localhost:3000`
+### **Server:**
+```bash
+http://localhost:3000
+```
 
 <details>
-  <summary><strong>➡️ Produtos</strong></summary>
+  <summary><strong>▶️ Rotas para Produtos</strong></summary>
 
 ## `GET` /products
 
@@ -44,7 +47,7 @@ Os produtos possuem `id` e `nome`.
 
 Os retornos seguem os formatos abaixo:
 
-- `Ok` - Response status `200` (application/json):
+- `Ok` - Retorna todos os produtos cadastrados no banco de dados - Response status `200` (application/json):
 
 ```bash
 [
@@ -60,7 +63,7 @@ Os retornos seguem os formatos abaixo:
 ]
 ```
 
-- `Not found` - Response status `404` (application/json):
+- `Not found` - Quando não há produtos cadastrados no banco de dados - Response status `404` (application/json):
 
 ```bash
 { "message": "Products not found" }
@@ -74,7 +77,7 @@ O produto possui `id` e `nome`.
 
 Os retornos seguem os formatos abaixo:
 
-- `Ok` - Response status `200` (application/json):
+- `Ok` - Retorna o produto encontrado no banco de dados - Response status `200` (application/json):
 
 ```bash
 {
@@ -83,7 +86,7 @@ Os retornos seguem os formatos abaixo:
 }
 ```
 
-- `Not found` - Response status `404` (application/json):
+- `Not found` - Quando o produto não está cadastrado no banco de dados - Response status `404` (application/json):
 
 ```bash
 { "message": "Product not found" }
@@ -103,7 +106,7 @@ http://localhost:PORT/products/search?q=nome_do_produto_para_pesquisa
 
 Os retornos seguem os formatos abaixo:
 
-- `Ok` - Response status `200` (application/json):
+- `Ok` - Retorna os produtos que possuem o termo enviado na URL - Response status `200` (application/json):
 
 ```bash
 // GET /products/search?q=Martelo
@@ -116,7 +119,7 @@ Os retornos seguem os formatos abaixo:
 ]
 ```
 
-- `Ok` - Response status `200` (application/json):
+- `Ok` - Retorna todos os produtos cadastrados quando o parametro é enviado vazio - Response status `200` (application/json):
 
 ```bash
 // GET /products/search?q=
@@ -148,7 +151,7 @@ O nome do produto deve ser enviado no `body` no seguinte formato:
 
 Os retornos seguem os formatos abaixo:
 
-- `Created` - Response status `201` (application/json):
+- `Created` - Quando o produto é cadastrado com sucesso - Response status `201` (application/json):
 
 ```bash
 {
@@ -157,13 +160,13 @@ Os retornos seguem os formatos abaixo:
 }
 ```
 
-- `Bad request` - Response status `400` (application/json):
+- `Bad request` - Quando o nome do produto não é enviado na requisição - Response status `400` (application/json):
 
 ```bash
 { "message": "\"name\" is required"  }
 ```
 
-- `Unprocessable Entity` - Response status `422` (application/json):
+- `Unprocessable Entity` - Quando o nome do produto tem menos de 5 caracteres - Response status `422` (application/json):
 
 ```bash
 { "message": "\"name\" length must be at least 5 characters long" }
@@ -183,7 +186,7 @@ O novo nome do produto deve ser enviado no `body` no seguinte formato:
 
 Os retornos seguem os formatos abaixo:
 
-- `Ok` - Response status `200` (application/json):
+- `Ok` - Quando o produto é atualizado com sucesso - Response status `200` (application/json):
 
 ```bash
 {
@@ -192,7 +195,7 @@ Os retornos seguem os formatos abaixo:
 }
 ```
 
-- `Not found` - Response status `404` (application/json):
+- `Not found` - Quando o produto não está cadastrado no banco de dados - Response status `404` (application/json):
 
 ```bash
 { "message": "Product not found" }
@@ -204,12 +207,206 @@ Os retornos seguem os formatos abaixo:
 
 Os retornos seguem os formatos abaixo:
 
-- `Deleted - No Content` - Response status `204`.
+- `Deleted - No Content` - Quando o produto é deletado com sucesso - Response status `204`.
 
-- `Not found` - Response status `404` (application/json):
+- `Not found` - Quando o produto não está cadastrado no banco de dados - Response status `404` (application/json):
 
 ```bash
 { "message": "Product not found" }
+```
+</details>
+
+<details>
+  <summary><strong>▶️ Rotas para Vendas</strong></summary>
+
+## `GET` /sales
+
+**Lista todas as vendas cadastradas no banco de dados**
+
+As vendas possuem `saleId`, `date`, `productId` e `quantity`.
+
+Os retornos seguem os formatos abaixo:
+
+- `Ok` - Retorna todas as vendas cadastradas no banco de dados - Response status `200` (application/json):
+
+```bash
+[
+  {
+    "saleId": 1,
+    "date": "2021-09-09T04:54:29.000Z",
+    "productId": 1,
+    "quantity": 2
+  },
+  {
+    "saleId": 1,
+    "date": "2021-09-09T04:54:54.000Z",
+    "productId": 2,
+    "quantity": 2
+  }
+
+  /* ... */
+]
+```
+
+- `Not found` - Quando não há vendas cadastradas no banco de dados - Response status `404` (application/json):
+
+```bash
+{ "message": "Sales not found" }
+```
+
+## `GET` /sales/:id
+
+**Lista apenas a venda com o `id` presente na URL**
+
+A venda possui `id`, `date`, `productId` e `quantity`.
+
+Os retornos seguem os formatos abaixo:
+
+- `Ok` - Retorna um array com os produtos e quantidades referente a venda - Response status `200` (application/json):
+
+```bash
+[
+  {
+    "date": "2021-09-09T04:54:29.000Z",
+    "productId": 1,
+    "quantity": 2
+  },
+  {
+    "date": "2021-09-09T04:54:54.000Z",
+    "productId": 2,
+    "quantity": 2
+  }
+
+  /* ... */
+]
+```
+
+- `Not found` - Quando a venda não está cadastrada no banco de dados - Response status `404` (application/json):
+
+```bash
+{ "message": "Sale not found" }
+```
+
+## `POST` /sales
+
+**Cadastra uma venda no banco de dados**
+
+A venda deve ser enviada no `body` no seguinte formato:
+
+```bash
+[
+  {
+    "productId": 1,
+    "quantity":1
+  },
+  {
+    "productId": 2,
+    "quantity":5
+  }
+]
+```
+
+Os retornos seguem os formatos abaixo:
+
+- `Created` - Quando a venda é cadastrada com sucesso - Response status `201` (application/json):
+
+```bash
+{
+  "id": 3,
+  "itemsSold": [
+    {
+      "productId": 1,
+      "quantity":1
+    },
+    {
+      "productId": 2,
+      "quantity":5
+    }
+  ]
+}
+```
+
+- `Bad request` - Quando o `productId` não é enviado na requisição - Response status `400` (application/json):
+
+```bash
+{ "message": "\"productId\" is required" }
+```
+
+- `Bad request` - Quando a `quantity` não é enviada na requisição - Response status `400` (application/json):
+
+```bash
+{ "message": "\"quantity\" is required" }
+```
+
+- `Unprocessable Entity` - Quando o campo `quantity` for menor ou igual a zero - Response status `422` (application/json):
+
+```bash
+{ "message": "\"quantity\" must be greater than or equal to 1" }
+```
+
+- `Not found` - Quando o `productId` não está cadastrado no banco de dados - Response status `422` (application/json):
+
+```bash
+{ "message": "Product not found" }
+```
+
+## `PUT` /sale/:id
+
+**Atualiza a venda com o `id` presente na URL**
+
+A venda atualizada deve ser enviada no `body` no seguinte formato:
+
+```bash
+[
+  {
+    "productId": 1,
+    "quantity":10
+  },
+  {
+    "productId": 2,
+    "quantity":50
+  }
+]
+```
+
+Os retornos seguem os formatos abaixo:
+
+- `Ok` - Quando a venda é atualizada com sucesso - Response status `200` (application/json):
+
+```bash
+{
+  "id": 3,
+  "itemsSold": [
+    {
+      "productId": 1,
+      "quantity":10
+    },
+    {
+      "productId": 2,
+      "quantity":50
+    }
+  ]
+}
+```
+
+- `Not found` - Quando a venda não está cadastrada no banco de dados - Response status `404` (application/json):
+
+```bash
+{ "message": "Sale not found" }
+```
+
+## `DELETE` /sales/:id
+
+**Deleta a venda com o `id` presente na URL**
+
+Os retornos seguem os formatos abaixo:
+
+- `Deleted - No Content` - Quando a venda é deletada com sucesso - Response status `204`.
+
+- `Not found` - Quando a venda não está cadastrada no banco de dados - Response status `404` (application/json):
+
+```bash
+{ "message": "Sale not found" }
 ```
 </details>
 </details>
