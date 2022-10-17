@@ -440,31 +440,95 @@ Os retornos seguem os formatos abaixo:
 # Instruções para rodar o projeto
 
 <details>
-<summary><strong>🛠 Passo a passo</strong></summary><br />
+<summary><strong>:whale: Rodando no docker</strong></summary><br />
 
-Clone o repositório
+**:warning: Antes de começar, seu docker-compose precisa estar na versão 1.29 ou superior. [Veja aqui](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04-pt) ou [na documentação](https://docs.docker.com/compose/install/) como instalá-lo. No primeiro artigo, você pode substituir onde está com `1.26.0` por `1.29.2`.**
+
+Clone o repositório:
 
 ```bash
-  git@github.com:WBomfim/Starwars-Planet-Search.git
+  git clone git@github.com:WBomfim/Starwars-Planet-Search.git
 ```
 
-Entre na pasta do repositório
+Entre na pasta do repositório:
 
 ```bash
   cd Starwars-Planet-Search
 ```
 
-Instale as dependências
+Rode os serviços `node` e `db`:
+
+```bash
+  docker-compose up -d
+```
+
+- Lembre-se de parar o `mysql` se estiver usando localmente na porta padrão (`3306`), ou adapte, caso queria fazer uso da aplicação em containers;
+- Esses serviços irão inicializar um container chamado `store_manager` e outro chamado `store_manager_db`;
+- A partir daqui você pode rodar o container `store_manager` via CLI ou abri-lo no VS Code.
+
+Acesse o terminal interativo do container criado pelo compose:
+
+```bash
+  docker exec -it store_manager bash
+```
+
+Instale as dependências dentro do container:
 
 ```bash
   npm install
 ```
 
-Inicie o projeto
+**:warning: Atenção:** Caso opte por utilizar o Docker, **TODOS** os comandos disponíveis no `package.json` (npm start, npm run test:mocha, ...) devem ser executados **DENTRO** do container, ou seja, no terminal que aparece após a execução do comando `docker exec` citado acima. 
 
-```bash
+**:warning: Atenção:** Não rode o comando npm audit fix! Ele atualiza várias dependências do projeto, e essa atualização pode gerar conflitos.
+
+Crie o banco de dados e gere as tabelas:
+
+```sh
+  npm run migration
+```
+
+Limpe e popule o banco de dados:
+
+```sh
+  npm run seed
+```
+
+Inicie o servidor Node:
+
+```sh
   npm start
 ```
+</details>
+
+<details>
+<summary><strong>💻️ Rodando localmente</strong></summary><br />
+
+Clone o repositório:
+
+```bash
+  git clone git@github.com:WBomfim/Starwars-Planet-Search.git
+```
+
+Entre na pasta do repositório:
+
+```bash
+  cd Starwars-Planet-Search
+```
+
+Instale as dependências:
+
+```bash
+  npm install
+```
+
+**:warning: Atenção:** Não rode o comando npm audit fix! Ele atualiza várias dependências do projeto, e essa atualização pode gerar conflitos.
+
+**:warning: Atenção:** Não esqueça de renomear/configurar o arquivo `.env.example` com as variáveis de ambiente.
+
+**:warning: Atenção:** Para rodar o projeto desta forma, **obrigatoriamente** você deve ter o `Node.js` instalado em seu computador.
+
+**:warning: Atenção:** A versão do `Node.js` e `NPM` a ser utilizada é `"node": ">=16.0.0"` e `"npm": ">=7.0.0"`, como descrito a chave `engines` no arquivo `package.json`. Idealmente deve-se utilizar o Node.js na `versão 16.14`, a versão na que esse projeto foi testado.
 </details>
 
 <details>
@@ -531,4 +595,4 @@ Executar os testes de unidade:
 
 # Autor
 
-🖋️ [@Willian Bomfim](https://github.com/WBomfim)
+🖋️ [@Willian Bomfim](https://www.linkedin.com/in/willianbomfim/)
