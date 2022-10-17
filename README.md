@@ -1,13 +1,13 @@
 # Boas-vindas ao repositório do Projeto Store Manager! 
 
 <details>
-  <summary><strong>👨‍💻 Descrição do projeto</strong></summary><br />
+<summary><strong>👨‍💻 Descrição do projeto</strong></summary><br />
 
 O projeto é uma API RESTful com arquitetura MSC que consiste em um sistema de gerenciamento de vendas no formato dropshipping, onde é possível criar, visualizar, deletar e atualizar produtos e vendas em um banco de dados MySQL, também foram desenvolvidos testes unitários para todos os arquivos e funções de cada camada da aplicação.
 </details>
 
 <details>
-  <summary><strong>📝 Detalhes do desenvolvimento</strong></summary><br />
+<summary><strong>📝 Detalhes do desenvolvimento</strong></summary><br />
 
 Nesse projeto foi utilizado **Node.js** com **Express** para o desenvolvimento da aplicação, foi utilizado **express-rescue** para capturar os erros não previstos nas rotas desenvolvidas e encaminhar para um middleware de error que exibi uma mensagem padrão para o usuário, para vailidação de dados foi utilizado o **Joi**, **MySQL** para o banco de dados e **mocha**, **chai** e **sinon** para os testes unitários.
 
@@ -28,6 +28,32 @@ Requisitos desenvolvidos:
 - Criado testes para 100% de cobertura das camadas da aplicação.
 </details>
 
+<details>
+<summary><strong>🎲 Diagrama de entidades e relacionamentos</strong></summary><br />
+
+![DER](https://github.com/WBomfim/Store-Manager_Node.js/blob/main/images/erStoreManager.png)
+
+### Tabelas
+
+O banco terá três tabelas: 
+
+- A tabela `products`, com os atributos `id` e `name`;
+- A tabela `sales`, com os atributos `id` e `date`;
+- A tabela `sales_products`, com os atributos `sale_id`, `product_id` e `quantity`;
+
+A tabela `products` tem o seguinte formato: *(O id é gerado automaticamente)*
+
+![Tabela Produtos](https://github.com/WBomfim/Store-Manager_Node.js/blob/main/images/tableproducts.png)
+
+A tabela `sales` tem o seguinte formato: *(O id e date são gerados automaticamente)*
+
+![Tabela Vendas](https://github.com/WBomfim/Store-Manager_Node.js/blob/main/images/tablesales.png)
+
+A tabela `sales_products`, é a tabela que faz o relacionamento `N:N` entre `products` e `sales` e tem o seguinte formato: *(O produto e a venda são deletados automaticamente)*
+
+![Tabela Vendas-Produtos](https://github.com/WBomfim/Store-Manager_Node.js/blob/main/images/tablesalesproducts.png)
+</details>
+  
 <details>
   <summary><strong>📄 Documentação</strong></summary>
 
@@ -411,7 +437,7 @@ Os retornos seguem os formatos abaixo:
 </details>
 </details>
 
-# Instruções para rodar o Projeto
+# Instruções para rodar o projeto
 
 <details>
   <summary><strong>🛠 Passo a passo</strong></summary><br />
@@ -444,16 +470,15 @@ Inicie o projeto
 # Demais detalhes
 
 <details>
-  <summary><strong>🕵🏿 Revisões futuras</strong></summary><br />
+<summary><strong>🕵🏿 Revisões futuras</strong></summary><br />
 
-  - Revisar a presença de estados derivados e possíveis otimizações nas funções de filtro.
+- Revisar as funções para possíveis otimizações.
 </details>
 
 <details>
-  <summary><strong>🚀 Próximas implementações</strong></summary><br />
+<summary><strong>🚀 Próximas implementações</strong></summary><br />
 
-  - Implementar responsividade para que seja possível utilizar a aplicação em todos os formatos de tela.
-  - Implementar testes para garantir a qualidade da aplicação e robustez para próximas alterações. 
+- Implementar testes de integração para garantir a interação de todas as funcionalidades da aplicação e tornar o ambiente mais robusto para  as próximas alterações. 
 </details>
 
 # Autor
