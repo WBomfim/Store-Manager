@@ -447,13 +447,13 @@ Os retornos seguem os formatos abaixo:
 Clone o repositório:
 
 ```bash
-  git clone git@github.com:WBomfim/Starwars-Planet-Search.git
+  git clone git@github.com:WBomfim/Store-Manager.git
 ```
 
 Entre na pasta do repositório:
 
 ```bash
-  cd Starwars-Planet-Search
+  cd Store-Manager
 ```
 
 Rode os serviços `node` e `db`:
@@ -507,13 +507,13 @@ Inicie o servidor Node:
 Clone o repositório:
 
 ```bash
-  git clone git@github.com:WBomfim/Starwars-Planet-Search.git
+  git clone git@github.com:WBomfim/Store-Manager.git
 ```
 
 Entre na pasta do repositório:
 
 ```bash
-  cd Starwars-Planet-Search
+  cd Store-Manager
 ```
 
 Instale as dependências:
